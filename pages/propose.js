@@ -86,7 +86,7 @@ export default function Propose() {
 
   if (querying) {
     return (
-      <div className="max-w-6xl bg w-full space-y-4  flex flex-col justify-center items-center">
+      <div className="flex flex-1 justify-center items-center min-h-screen">
         <svg
           className="animate-spin -ml-1 mr-3 h-24 w-24 text-white"
           xmlns="http://www.w3.org/2000/svg"

@@ -2,7 +2,6 @@ import { UserContext } from "../context/userContext";
 import { useContext } from "react";
 import Link from "next/link";
 
-import { Account } from "../components/Account";
 import { Connect } from "../components/Connect";
 import { NetworkSwitcher } from "./NetworkSwitcher";
 import { useNetwork } from "wagmi";

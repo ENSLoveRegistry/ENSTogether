@@ -81,7 +81,6 @@ export default function RegistryContext({ children }) {
   }`,
     fetcher
   );
-  console.log("unions from context", unions);
   useEffect(() => {
     statsFromRegistry();
   }, [props, regCount]);
