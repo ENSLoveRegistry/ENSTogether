@@ -22,10 +22,6 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
   const [address, setAddress] = useState(res);
   const [error, setError] = useState("");
   const options = { value: ethers.utils.parseEther("0.01") };
-  console.log(address);
-
-  // const notifyError = (msg) => toast.error(msg);
-  // const notifySuccess = (msg) => toast.success(msg);
 
   const [proposalDone, write] = useContractWrite(
     {
@@ -96,7 +92,6 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
       })
     );
     const tx = await result;
-    console.log("tx", tx);
   };
 
   const handleMMerror = async (err) => {
@@ -126,10 +121,11 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
     }
     if (waitResult?.data?.status >= 1) {
       setCanPropose(false);
-      setProcessing(false);
       toast.success(`transaction confirmed`, {
         toastId: "transactionConfirmed",
       });
+      setProcessing(false);
+
       return;
     }
     adda();
@@ -170,7 +166,7 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
         <button
           type="submit"
           disabled={processing}
-          className="rounded-full font-bold text-xl bg-rose-400 text-white py-2 mt-2 flex items-center justify-center disabled:opacity-60 hover:bg-rose-600"
+          className="rounded-full font-bold text-xl bg-rose-400 text-white py-2 mt-2 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
         >
           {processing && (
             <svg
@@ -194,15 +190,20 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
               ></path>
             </svg>
           )}
-          {processing ? "Processing..." : "Send"}
+          {processing ? "Processing..." : "Send "}
         </button>
+        <span className="flex justify-center text-rose-600 text-xs tracking-tight font-semibold">
+          Pay 0.01 ETH
+        </span>
         {hash && (
           <a
             href={`https://goerli.etherscan.io/tx/${hash}`}
             rel="noopener noreferrer"
             target="_blank"
           >
-            View on Goerli
+            <span className="text-md text-center text-rose-600 font-semibold underline">
+              &rarr; View on Goerli
+            </span>
           </a>
         )}
         {proposalDone?.error && <div>{proposalDone.error.message}</div>}

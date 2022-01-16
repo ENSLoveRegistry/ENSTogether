@@ -1,10 +1,10 @@
-import { UserContext } from "../context/userContext";
 import { useContext } from "react";
+import { UserContext } from "../context/userContext";
 import Link from "next/link";
+import { useNetwork } from "wagmi";
 
 import { Connect } from "../components/Connect";
 import { NetworkSwitcher } from "./NetworkSwitcher";
-import { useNetwork } from "wagmi";
 import AccMenu from "./AccMenu";
 
 export default function Nav() {
@@ -15,7 +15,7 @@ export default function Nav() {
 
   if (accountData)
     return (
-      <div className="fixed z-50 top-0  w-screen flex px-12 py-4 justify-between items-center mx-auto bg-rose-50 ">
+      <div className="fixed z-50 top-0  w-screen flex px-12 py-4 justify-between items-center mx-auto  ">
         <Link passHref href={"/"}>
           <a>
             <h3 className="text-2xl text-rose-500 font-bold">ENSTogether</h3>
@@ -51,7 +51,7 @@ export default function Nav() {
       </div>
     );
   return (
-    <div className="fixed z-50 top-0  w-screen flex px-12 py-4 justify-between items-center mx-auto bg-rose-50 ">
+    <div className="fixed z-50 top-0  w-screen flex px-12 py-4 justify-between items-center mx-auto ">
       <Link passHref href={"/"}>
         <a>
           <h3 className="text-2xl text-rose-500 font-bold">ENSTogether</h3>

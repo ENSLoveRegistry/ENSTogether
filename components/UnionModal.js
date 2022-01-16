@@ -3,7 +3,7 @@ import { useState, useEffect, Fragment } from "react";
 import { fromUnixTime, format } from "date-fns";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import { useEnsLookup } from "wagmi";
+import { useEnsLookup, useNetwork } from "wagmi";
 import { toast } from "react-toastify";
 import Image from "next/image";
 
@@ -58,7 +58,6 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
     try {
       let message = "sign to update status";
       const signed = await signer.signMessage(message);
-      console.log("signed", signed);
       const tx = await contract.updateUnion(num, options).then(() =>
         contract.on("UnionStatusUpdated", () => {
           if (num === 2) {

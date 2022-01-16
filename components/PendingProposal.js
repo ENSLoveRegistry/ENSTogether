@@ -103,20 +103,19 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
   return (
     <div className="flex flex-col flex-1 justify-center items-center min-h-screen">
       {deadline <= currentTime ? (
-        <div className="flex flex-col justify-center p-4 bg-red-700 text-stone-100 rounded-3xl max-w-md">
-          <p className="text-md">
-            You&apos;ve been brave and that&apos;s something cool. You can
-            propose to somebody else when you are ready
+        <div className="my-8 flex flex-col justify-center p-6 bg-rose-600 text-white rounded-3xl max-w-md">
+          <p className="text-md text-center">
+            You&apos;ve been brave and that&apos;s something cool. <br /> You
+            can propose to somebody else when you are ready
           </p>
         </div>
       ) : (
         <Timer deadline={deadline} />
       )}
-      <div className="flex flex-col  bg-gray-300 rounded-2xl p-12 min-w-[300px]  ">
+      <div className="flex flex-col  justify-center items-center text-center mt-12 bg-rose-100 rounded-2xl p-12 min-w-[300px] text-lg font-semibold text-rose-600 ">
         <h3>
           You&apos;ve proposed to
-          <span className="font-bold mx-2"> {ensTo && ensTo}</span>
-          to be registred as a couple on the Ethereum blockchain
+          <span className="font-bold mx-[4px]"> {ensTo && ensTo}</span>!
         </h3>
         <h4>Date: {formattedDate}</h4>
 
@@ -124,7 +123,7 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
 
         {deadline > currentTime ? (
           <button
-            className="py-2 px-4 bg-stone-400 text-stone-800 rounded-full flex items-center justify-center disabled:opacity-60"
+            className=" max-w-[150px] rounded-full font-bold text-xl bg-rose-400 text-white py-2 px-8 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
             onClick={cancelProposal}
             disabled={processing}
           >
@@ -154,7 +153,7 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
           </button>
         ) : (
           <button
-            className="py-2 px-4 bg-stone-400 text-stone-800 rounded-full flex items-center justify-center disabled:opacity-60"
+            className=" rounded-full font-bold text-xl bg-rose-400 px-8 text-white py-2 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
             onClick={() => setCanPropose(true)}
           >
             Propose

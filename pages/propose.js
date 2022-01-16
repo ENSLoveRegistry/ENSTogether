@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
-import { useContractRead } from "wagmi";
+import { useContractRead, useNetwork } from "wagmi";
 
 //Components
 import MakeProposal from "../components/MakeProposal";
@@ -49,6 +49,7 @@ export default function Propose() {
       watch: true,
     }
   );
+  const [{ data: networkData }] = useNetwork();
 
   const notifyError = (msg) => toast.error(msg);
   const notifySuccess = (msg) => toast.success(msg);
@@ -84,7 +85,7 @@ export default function Propose() {
     error: "bg-rose-100 text-rose-600 flex",
   };
 
-  if (querying) {
+  if (querying || networkData?.chain.id !== 5) {
     return (
       <div className="flex flex-1 justify-center items-center min-h-screen">
         <svg

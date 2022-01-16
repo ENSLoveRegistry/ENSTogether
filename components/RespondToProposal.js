@@ -92,87 +92,111 @@ export default function ProposalToRespond({
       const now = new Date().getTime();
       setCurrentTime(now);
     }, 1000);
+    if (deadline < currentTime) {
+      read();
+      return;
+    }
     return () => clearInterval();
-  }, []);
+  }, [deadline, currentTime]);
 
   return (
-    <div className="flex flex-col bg-gray-300 rounded-2xl p-12 ">
-      <h2>Congratulations, someone loves you</h2>
-      {deadline < currentTime ? <p>Expired!</p> : <Timer deadline={deadline} />}
-      <h3>
-        One proposal made from <span className="font-bold">{f} </span>{" "}
-      </h3>
-      <h4>Sent on: {formattedDate}</h4>
-      <h4>Status: {deadline < currentTime ? "Expired" : "Pending"}</h4>
+    <div className="flex flex-col flex-1 justify-center items-center min-h-screen">
       {deadline > currentTime ? (
-        <div className="flex">
-          <button
-            onClick={decline}
-            disabled={processing && response == "decline"}
-            className="py-2 px-4 bg-stone-300 text-green-500 rounded-full mr-6 flex items-center justify-center disabled:opacity-60"
-          >
-            {processing && response == "decline" && (
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-            )}
-            {processing && response == "decline" ? "Processing..." : "Decline"}
-          </button>
-          <button
-            onClick={accept}
-            disabled={processing && response == "accept"}
-            className="py-2 px-4 bg-stone-300 text-yellow-500 rounded-full flex items-center justify-center disabled:opacity-60"
-          >
-            {processing && response == "accept" && (
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-            )}
-            {processing && response == "accept" ? "Processing..." : "Accept"}
-          </button>
-        </div>
+        <Timer deadline={deadline} />
       ) : (
-        <button
-          className="py-2 px-4 bg-stone-300 text-yellow-500 rounded-full flex items-center justify-center disabled:opacity-60"
-          onClick={() => setProposalToApprove(null)}
-        >
-          Propose
-        </button>
+        <span className="text-rose-600 text-4xl font-bold"> Expired :( </span>
       )}
+      {deadline > currentTime && (
+        <h2 className="text-2xl text-rose-600 mt-8">
+          Congratulations, someone loves you : )
+        </h2>
+      )}
+
+      <div className="mt-8 flex flex-col space-y-2 justify-center p-12 bg-rose-100 text-rose-600  rounded-3xl max-w-lg text-2xl">
+        <p>
+          One proposal made from <span className="font-bold">{f} </span>
+        </p>
+        <p>Sent on: {formattedDate}</p>
+        <p>
+          Status:{" "}
+          {deadline < currentTime ? (
+            <span className="font-bold">Expired</span>
+          ) : (
+            <span className="font-bold">Pending</span>
+          )}
+        </p>
+        {deadline > currentTime ? (
+          <div className="flex justify-start">
+            <button
+              onClick={decline}
+              disabled={processing && response == "decline"}
+              className=" rounded-full font-bold text-xl bg-rose-200 px-8 text-rose-400 py-2 mt-4 mr-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500 hover:text-rose-50"
+            >
+              {processing && response == "decline" && (
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
+              {processing && response == "decline"
+                ? "Processing..."
+                : "Decline"}
+            </button>
+            <button
+              onClick={accept}
+              disabled={processing && response == "accept"}
+              className=" rounded-full font-bold text-xl bg-rose-500 px-8 text-white py-2 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-600"
+            >
+              {processing && response == "accept" && (
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
+              {processing && response == "accept" ? "Processing..." : "Accept"}
+            </button>
+          </div>
+        ) : (
+          <button
+            className=" rounded-full font-bold text-xl bg-rose-400 px-8 text-white py-2 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
+            onClick={() => setProposalToApprove(null)}
+          >
+            Propose
+          </button>
+        )}
+      </div>
     </div>
   );
 }

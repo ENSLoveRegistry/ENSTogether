@@ -87,8 +87,12 @@ export default function FAq() {
                 linked to your ethereum address, a decentralized identity that
                 you can use across different services on web3. there are many
                 other benefits of having an ENS name.
-                <Link passHref href={"htttps://ens.domains"}>
-                  <a className="ml-2" target="_blank" rel="noopener noreferrer">
+                <Link passHref href={"https://ens.domains"}>
+                  <a
+                    className="ml-2 font-bold tracking-tight text-sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     LEARN HERE.
                   </a>
                 </Link>
@@ -205,6 +209,37 @@ export default function FAq() {
                 status to &apos;paused&apos; or &apos;separated&apos;. The
                 latter enables you to generate another registration in the
                 future.
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
+        <Disclosure as="div" className="mt-2">
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="flex justify-between w-full px-4 py-2 text-md font-medium text-left text-rose-600 bg-rose-100 rounded-lg hover:bg-rose-200 focus:outline-none focus-visible:ring focus-visible:ring-rose-500 focus-visible:ring-opacity-75">
+                {" "}
+                <span>Contract</span>
+                <ChevronDownIcon
+                  className={`${
+                    open ? "transform rotate-180" : ""
+                  } w-5 h-5 text-rose-600`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
+                The contract is not audited but you can check it <br />
+                <Link
+                  href={
+                    "https://goerli.etherscan.io/address/0x8771018931Bee454ed4e2D290d66cB6584df7652"
+                  }
+                >
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-bold tracking-tight text-sm"
+                  >
+                    &rarr; CONTRACT
+                  </a>
+                </Link>
               </Disclosure.Panel>
             </>
           )}
