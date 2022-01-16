@@ -1,32 +1,16 @@
 import { createContext, useState, useEffect } from "react";
 import { useAccount, useNetwork, useContractRead } from "wagmi";
-import { useRouter } from "next/router";
 
 const UserContext = createContext();
 const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
 
 export default function User({ children }) {
-  const router = useRouter();
   const [hearts, setHearts] = useState(true);
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
   });
   const [{ data: network }] = useNetwork();
-
-  // const [{ data: proposalsMade }] = useContractRead(
-  //   {
-  //     addressOrName: contractAddress,
-  //     contractInterface: abi,
-  //   },
-  //   "proposals",
-  //   {
-  //     args: accountData?.address,
-  //   },
-  //   {
-  //     watch: true,
-  //   }
-  // );
 
   const [{ data: time }] = useContractRead(
     {

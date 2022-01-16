@@ -76,7 +76,7 @@ export default function Home() {
             </a>
           </Link>
         </h3>
-        <div className="p-4 flex items-center justify-center space-x-4 mx-auto mt-6 font-medium w-full max-w-lg">
+        {/* <div className="p-4 flex items-center justify-center space-x-4 mx-auto mt-6 font-medium w-full max-w-lg">
           <p className="">
             Love Proposals:
             <span className="font-bold text-rose-600 ml-1">
@@ -89,7 +89,7 @@ export default function Home() {
               {registryCounter}
             </span>
           </p>
-        </div>
+        </div> */}
         {!accountData && (
           <button
             className=" my-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full hover:opacity-60 text-bold text-xl"
@@ -110,14 +110,3 @@ export default function Home() {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   const response = await client.query(query).toPromise();
-//   console.log("response", response.data.unions);
-//   return {
-//     props: {
-//       unions: response.data.unions,
-//     },
-//     revalidate: 60,
-//   };
-// }
