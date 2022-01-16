@@ -12,10 +12,10 @@ const Timer = ({ deadline }) => {
   const getCoundown = () => {
     if (diffInSeconds < 1) {
       return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
+        days: "00",
+        hours: "00",
+        minutes: "00",
+        seconds: "00",
       };
     }
     const days = Math.floor(diffInSeconds / ONE_DAY);
@@ -45,14 +45,13 @@ const Timer = ({ deadline }) => {
       const now = new Date().getTime();
       setCurrentTime(now);
     }, 1000);
-    return;
+    return () => clearInterval();
   }, []);
 
   return (
-    <div>
-      <p>COUNTDOWN</p>
-      <div className="flex flex-col justify-center p-4 bg-stone-900 text-stone-100 rounded-3xl max-w-md">
-        <div className="flex justify-between px-2 text-2xl">
+    <div className="flex flex-col justify-center items-center">
+      <div className=" p-4 bg-rose-100 text-rose-600 rounded-3xl max-w-lg  mt-4">
+        <div className="font-mono flex justify-between px-2 text-7xl font-normal">
           <span>{countdown.days} </span>
           <span>:</span>
           <span>{countdown.hours}</span>

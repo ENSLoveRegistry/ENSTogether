@@ -8,6 +8,7 @@ const contractAddress = require("../config/contractAddress");
 
 export default function User({ children }) {
   const router = useRouter();
+  const [hearts, setHearts] = useState(true);
   const [{ data: accountData }] = useAccount({
     fetchEns: true,
   });
@@ -43,7 +44,8 @@ export default function User({ children }) {
       value={{
         network,
         accountData,
-        // proposalsMade,
+        hearts,
+        setHearts,
         time,
       }}
     >
