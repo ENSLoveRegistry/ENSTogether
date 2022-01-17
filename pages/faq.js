@@ -171,7 +171,7 @@ export default function FAq() {
                 <br />
                 <Link
                   href={
-                    "https://goerli.etherscan.io/address/0x18736b8b30316700198cdc5FAdfA2A3A64EC54C4"
+                    "https://goerli.etherscan.io/address/0xb2b02D6CfcEF77F13aaC909bd4af54646bFA2a14"
                   }
                 >
                   <a
@@ -179,7 +179,7 @@ export default function FAq() {
                     rel="noopener noreferrer"
                     className="font-bold tracking-tight text-sm"
                   >
-                    https://goerli.etherscan.io/address/0x18736b8b30316700198cdc5FAdfA2A3A64EC54C4
+                    https://goerli.etherscan.io/address/0xb2b02D6CfcEF77F13aaC909bd4af54646bFA2a14
                   </a>
                 </Link>
               </Disclosure.Panel>
