@@ -1,4 +1,3 @@
-import { useNetwork } from "wagmi";
 import { useAccount } from "wagmi";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -12,7 +11,6 @@ export default function AccMenu() {
   const [{ data: accountData }, disconnect] = useAccount({
     fetchEns: true,
   });
-  const [{ data: networkData }] = useNetwork();
 
   return (
     <div className="w-56 text-right ">
@@ -20,18 +18,12 @@ export default function AccMenu() {
         <div>
           <Menu.Button className=" px-4 py-2 text-sm font-medium text-white bg-black rounded-full bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
             <div className="flex items-center ">
-              {/* <span className="mr-2">
-                {networkData && networkData.chain.name}
-              </span> */}
-
               {/* AVATAR */}
               {accountData?.ens?.avatar ? (
-                <Image
+                <img
                   src={accountData.ens.avatar}
                   alt="ENS profile picture avatar"
-                  width={40}
-                  height={40}
-                  objectFit="cover"
+                  className="w-10 h-10 object-cover rounded-full text-transparent"
                 />
               ) : (
                 <div className="h-10 w-10 rounded-full bg-orange-200"></div>
