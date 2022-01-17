@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { UnitedContext } from "../context/registryContext";
 import { fromUnixTime, format } from "date-fns";
+import { useEnsAvatar } from "wagmi";
 import { HeartIcon } from "@heroicons/react/solid";
 
 export default function RegistryTable() {
@@ -38,12 +39,17 @@ export default function RegistryTable() {
     return status;
   };
 
+  // const [getEnsAvatar] = useEnsAvatar({
+  //   addressOrName: ens,
+  // });
+
   const formatUnion = (unions) => {
     let uArray = [];
     let promiseArr = unions?.unions.map(async (u, i) => {
       const { from, to, currentStatus, createdAt, registryNumber, id } = u;
       const ensFrom = await convertToENS(from);
       const ensTo = await convertToENS(to);
+      // const ensAvatarFrom = await getEnsAvatar(ens);
       const date = formatDate(createdAt);
       const status = statusCheck(currentStatus);
       const union = {
@@ -51,6 +57,7 @@ export default function RegistryTable() {
         id,
         ensFrom,
         ensTo,
+        // ensAvatarFrom,
         date,
         currentStatus,
         registryNumber,

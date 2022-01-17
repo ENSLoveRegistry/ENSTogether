@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
 
@@ -15,7 +15,6 @@ const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
 
 export default function MakeProposal({ currentAccount, setCanPropose, read }) {
-  // console.log(currentAccount);
   const [searchENS, setSearchENS] = useState("");
   const [avatar, setAvatar] = useState("");
   const [processing, setProcessing] = useState(false);
@@ -201,7 +200,7 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <span className="text-md text-center text-rose-600 font-semibold underline">
+            <span className="text-sm text-center text-rose-600 font-semibold underline">
               &rarr; View on Goerli
             </span>
           </a>

@@ -76,20 +76,7 @@ export default function Home() {
             </a>
           </Link>
         </h3>
-        {/* <div className="p-4 flex items-center justify-center space-x-4 mx-auto mt-6 font-medium w-full max-w-lg">
-          <p className="">
-            Love Proposals:
-            <span className="font-bold text-rose-600 ml-1">
-              {proposalsCounter}
-            </span>
-          </p>
-          <p className="">
-            Registry Count:
-            <span className="font-bold text-rose-600 ml-1">
-              {registryCounter}
-            </span>
-          </p>
-        </div> */}
+
         {!accountData && (
           <button
             className=" my-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full hover:opacity-60 text-bold text-xl"

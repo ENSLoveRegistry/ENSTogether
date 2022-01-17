@@ -42,11 +42,11 @@ export default function ProposalToRespond({
     try {
       await contract.respondToProposal(1, t, f).then(() => {
         contract.on("ProposalResponded", () => {
-          toast.success("Nice!, you are getting united!");
+          toast.success("💍 You are getting registered!");
         });
         contract.on("GotUnited", () => {
           setProcessing(false);
-          toast.success("You're officially united!");
+          toast.success("You're officially registered!");
           readUnion();
         });
       });

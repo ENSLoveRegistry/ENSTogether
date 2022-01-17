@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { fromUnixTime, format, addSeconds } from "date-fns";
 import Timer from "./Timer";
 import { toast } from "react-toastify";
+import { FaTwitter, FaEnvelope } from "react-icons/fa";
 
 import { useEnsLookup } from "wagmi";
 
@@ -158,6 +159,17 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
           >
             Propose
           </button>
+        )}
+        {deadline <= currentTime && (
+          <div className=" mt-4 flex flex-col items-start ">
+            <p className="text-rose-600 font-semibold text-sm">
+              Share it with your lover
+            </p>
+            <div className="flex items-center mx-auto justify-center  mt-2">
+              <FaTwitter className=" mr-4 bg-rose-200 text-rose-600 p-3 w-10 h-10 rounded-xl" />
+              <FaEnvelope className=" bg-rose-200 text-rose-600 p-3 w-10 h-10 rounded-xl" />
+            </div>
+          </div>
         )}
       </div>
     </div>
