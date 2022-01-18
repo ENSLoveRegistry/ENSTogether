@@ -40,7 +40,7 @@ export default function ProposalToRespond({
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, abi, signer);
     try {
-      await contract.respondToProposal(1, t, f).then(() => {
+      const tx = await contract.respondToProposal(1, t, f).then(() => {
         contract.on("ProposalResponded", () => {
           toast.success("💍 You are getting registered!");
         });
@@ -112,7 +112,7 @@ export default function ProposalToRespond({
         </h2>
       )}
 
-      <div className="mt-8 flex flex-col space-y-2 justify-center p-12 bg-rose-100 text-rose-600  rounded-3xl max-w-lg text-2xl">
+      <div className="mt-8 flex flex-col space-y-2 justify-center p-12 bg-rose-100 text-rose-600  rounded-3xl max-w-lg text-xl">
         <p>
           One proposal made from <span className="font-bold">{f} </span>
         </p>
@@ -161,7 +161,7 @@ export default function ProposalToRespond({
             <button
               onClick={accept}
               disabled={processing && response == "accept"}
-              className=" rounded-full font-bold text-xl bg-rose-500 px-8 text-white py-2 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-600"
+              className=" rounded-full font-bold text-xl bg-rose-400 text-white py-2 px-8 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
             >
               {processing && response == "accept" && (
                 <svg
