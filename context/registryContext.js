@@ -13,6 +13,7 @@ export default function RegistryContext({ children }) {
   const [cost, setCost] = useState(null);
   const [proposalsCounter, setProposalsCounter] = useState(null);
   const [registryCounter, setRegistryCounter] = useState(null);
+
   const APIURL =
     "https://api.thegraph.com/subgraphs/name/javier-szyfer/ens-two";
 
@@ -70,7 +71,7 @@ export default function RegistryContext({ children }) {
   const fetcher = (query) => request(APIURL, query);
   const { data: unions, error } = useSWR(
     `{
-    unions(first: 12 orderBy: createdAt orderDirection: desc ) {
+    unions(first: 12) {
       id
       from
       to

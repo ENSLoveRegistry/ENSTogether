@@ -151,8 +151,8 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
   // }
 
   return (
-    <div className="flex justify-between items-center min-h-screen space-x-12 text-rose-600 mx-auto max-w-2xl">
-      <div className="flex flex-col">
+    <div className=" flex flex-col justify-center space-y-10 mt-16 md:mt-16 md:space-y-0 lg:mt-0 md:flex-row md:justify-between items-center min-h-screen md:space-x-12 text-rose-600 md:mx-auto md:max-w-2xl ">
+      <div className="flex flex-col w-72">
         <h1 className="font-bold text-4xl">Registered!</h1>
         <p className="mt-8">
           With: {ensName ? ensName : "loading..."}
