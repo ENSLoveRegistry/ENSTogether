@@ -106,7 +106,7 @@ export default function RegistryTable() {
   return (
     <>
       <div className="hidden md:flex flex-col rounded-3xl bg-rose-100 shadow shadow-rose-300/40 ">
-        <table className=" rounded-full min-w-full divide-y divide-rose-200 ">
+        <table className=" rounded-full divide-y divide-rose-200 ">
           <tbody className=" divide-y divide-rose-200 text-rose-500 ">
             {allUnions?.length > 0 &&
               allUnions.map((u) => (
@@ -160,7 +160,7 @@ export default function RegistryTable() {
         </table>
       </div>
 
-      <div className="md:hidden space-y-4 pb-8">
+      <div className="space-y-4 pb-8 md:hidden ">
         {allUnions?.length > 0 &&
           allUnions.map((u) => {
             {
@@ -194,9 +194,9 @@ export default function RegistryTable() {
                     <div className="flex items-center justify-start">
                       {u?.avatarFrom ? (
                         <img
-                          src={u.avatarTo}
+                          src={u.avatarFrom}
                           className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
-                          alt={`${u.avatarTo} profile avatar`}
+                          alt={`${u.avatarFrom} profile avatar`}
                         />
                       ) : (
                         <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
