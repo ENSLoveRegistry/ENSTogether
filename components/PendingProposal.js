@@ -76,7 +76,7 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
 
   if (!proposal) {
     return (
-      <div className="flex flex-1 justify-center items-center min-h-screen">
+      <div className="flex md:flex-1 justify-center items-center min-h-screen">
         <svg
           className="animate-spin -ml-1 mr-3 h-24 w-24 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -102,7 +102,7 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
   }
 
   return (
-    <div className="flex flex-col flex-1 justify-center items-center min-h-screen">
+    <div className="flex flex-col md:flex-1 justify-center items-center min-h-screen  p-4">
       {deadline <= currentTime ? (
         <div className="my-8 flex flex-col justify-center p-6 bg-rose-600 text-white rounded-3xl max-w-md">
           <p className="text-md text-center">
@@ -124,7 +124,7 @@ export default function PendingProposal({ to, setCanPropose, time, read }) {
 
         {deadline > currentTime ? (
           <button
-            className=" max-w-[150px] rounded-full font-bold text-xl bg-rose-400 text-white py-2 px-8 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
+            className=" max-w-[190px] rounded-full font-bold text-xl bg-rose-400 text-white py-2 px-8 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
             onClick={cancelProposal}
             disabled={processing}
           >

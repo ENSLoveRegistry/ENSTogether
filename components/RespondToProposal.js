@@ -100,19 +100,19 @@ export default function ProposalToRespond({
   }, [deadline, currentTime]);
 
   return (
-    <div className="flex flex-col flex-1 justify-center items-center min-h-screen">
+    <div className="flex flex-col flex-1 justify-center items-center min-h-screen ">
       {deadline > currentTime ? (
         <Timer deadline={deadline} />
       ) : (
         <span className="text-rose-600 text-4xl font-bold"> Expired :( </span>
       )}
       {deadline > currentTime && (
-        <h2 className="text-2xl text-rose-600 mt-8">
+        <h2 className=" text=xl md:text-2xl text-rose-600 mt-8 px-8">
           Congratulations, someone loves you : )
         </h2>
       )}
 
-      <div className="mt-8 flex flex-col space-y-2 justify-center p-12 bg-rose-100 text-rose-600  rounded-3xl max-w-lg text-xl">
+      <div className="mt-8 flex flex-col px-4 space-y-2 justify-center p-12 bg-rose-100 text-rose-600  rounded-3xl max-w-lg text-xl">
         <p>
           One proposal made from <span className="font-bold">{f} </span>
         </p>
@@ -161,7 +161,7 @@ export default function ProposalToRespond({
             <button
               onClick={accept}
               disabled={processing && response == "accept"}
-              className=" rounded-full font-bold text-xl bg-rose-400 text-white py-2 px-8 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
+              className="w=[72px] rounded-full font-bold text-xl bg-rose-400 text-white py-2 px-8 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
             >
               {processing && response == "accept" && (
                 <svg

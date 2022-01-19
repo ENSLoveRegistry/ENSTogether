@@ -15,10 +15,12 @@ export default function Nav() {
 
   if (accountData)
     return (
-      <div className="fixed z-50 top-0  w-screen flex px-12 py-4 justify-between items-center mx-auto  ">
+      <div className="fixed z-50 top-0 w-full flex px-4 md:px-6 lg:px-12  py-4 md:py-6 justify-between items-center mx-auto backdrop-blur-sm  ">
         <Link passHref href={"/"}>
           <a>
-            <h3 className="text-2xl text-rose-500 font-bold">ENSTogether</h3>
+            <h3 className="text-xl sm:text-2xl text-rose-500 font-bold">
+              ENSTogether
+            </h3>
           </a>
         </Link>
         <div className="flex items-center">
@@ -31,7 +33,7 @@ export default function Nav() {
           )}
 
           <Link passHref href={"/registry"}>
-            <a>
+            <a className="hidden md:block">
               <span className="text-2xl bg-rose-100 py-2 px-4 rounded-xl hover:bg-rose-200 mr-4">
                 📋
               </span>
@@ -39,7 +41,7 @@ export default function Nav() {
           </Link>
 
           <Link passHref href={"/propose"}>
-            <a>
+            <a className="hidden md:block">
               <span className="text-2xl bg-rose-100 py-2 px-4 rounded-xl  hover:bg-rose-200">
                 ❤️
               </span>
@@ -51,7 +53,7 @@ export default function Nav() {
       </div>
     );
   return (
-    <div className="fixed z-50 top-0  w-screen flex px-12 py-4 justify-between items-center mx-auto ">
+    <div className="fixed z-50 top-0 w-full flex px-4 md:px-6 lg:px-12  py-4 md:py-6 justify-between items-center mx-auto  ">
       <Link passHref href={"/"}>
         <a>
           <h3 className="text-2xl text-rose-500 font-bold">ENSTogether</h3>

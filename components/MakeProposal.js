@@ -134,10 +134,10 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
   const hash = proposalDone?.data?.hash;
 
   return (
-    <div className="flex flex-1 justify-center items-center min-h-screen">
+    <div className="flex flex-1 px-8 justify-center items-center min-h-screen md:pt-12 max-w-lg mx-auto  ">
       <form
         onSubmit={searchForENS}
-        className="flex flex-col min-w-[400px] p-12 bg-rose-100 rounded-2xl space-y-4"
+        className="flex flex-col p-8 md:p-10 lg:p-12 bg-rose-100 rounded-2xl space-y-4 w-full "
       >
         {/* <img
           src={avatar}
@@ -200,8 +200,8 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <span className="text-sm text-center text-rose-600 font-semibold underline">
-              &rarr; View on Goerli
+            <span className="flex justify-center text-sm text-center text-rose-600 font-semibold underline">
+              View on Goerli
             </span>
           </a>
         )}

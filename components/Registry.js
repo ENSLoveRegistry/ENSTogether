@@ -13,9 +13,14 @@ export default function RegistryTable() {
     const { ethereum } = window;
     const provider = new ethers.providers.Web3Provider(ethereum);
     const converted = await provider.lookupAddress(add);
-    return converted;
+    const resolver = await provider.getResolver(converted);
+    const avatar = await resolver.getAvatar();
+    return [converted, avatar];
   };
 
+  // const [getEnsAvatar] = useEnsAvatar({
+  //   skip: true,
+  // });
   const formatDate = (d) => {
     const date = fromUnixTime(d);
     const formattedDate = format(date, "MM/dd/yy");
@@ -39,25 +44,21 @@ export default function RegistryTable() {
     return status;
   };
 
-  // const [getEnsAvatar] = useEnsAvatar({
-  //   addressOrName: ens,
-  // });
-
   const formatUnion = (unions) => {
     let uArray = [];
     let promiseArr = unions?.unions.map(async (u, i) => {
       const { from, to, currentStatus, createdAt, registryNumber, id } = u;
       const ensFrom = await convertToENS(from);
       const ensTo = await convertToENS(to);
-      // const ensAvatarFrom = await getEnsAvatar(ens);
       const date = formatDate(createdAt);
       const status = statusCheck(currentStatus);
       const union = {
         i,
         id,
-        ensFrom,
-        ensTo,
-        // ensAvatarFrom,
+        ensFrom: ensFrom[0],
+        ensTo: ensTo[0],
+        avatarFrom: ensFrom[1].url,
+        avatarTo: ensTo[1].url,
         date,
         currentStatus,
         registryNumber,
@@ -65,9 +66,10 @@ export default function RegistryTable() {
       };
       uArray.push(union);
     });
-    Promise.all(promiseArr).then(() => setAllUnions(uArray));
+    Promise.all(promiseArr).then(() =>
+      setAllUnions(uArray.sort((a, b) => b.registryNumber - a.registryNumber))
+    );
   };
-
   useEffect(() => {
     if (unions?.unions) {
       formatUnion(unions);
@@ -102,30 +104,111 @@ export default function RegistryTable() {
   }
 
   return (
-    <div className="flex flex-col bg-rose-100 px-8 py-4 w-full rounded-3xl max-w-2xl mt-8">
-      {allUnions?.length > 0 &&
-        allUnions.map((u) => {
-          {
-            return (
-              <div
-                key={u.id}
-                className="flex items-center justify-between py-4 text-rose-500"
-              >
-                <HeartIcon className="h-5 w-5 col-span-1 " />
-                <span className="">{u.date}</span>
-                <div className="flex items-center justify-start">
-                  <span className="h-10 w-10 rounded-full bg-rose-200 mr-4"></span>
-                  <span className="">{u.ensFrom}</span>
+    <>
+      <div className="hidden md:flex flex-col rounded-3xl bg-rose-100 shadow shadow-rose-300/40 ">
+        <table className=" rounded-full min-w-full divide-y divide-rose-200 ">
+          <tbody className=" divide-y divide-rose-200 text-rose-500 ">
+            {allUnions?.length > 0 &&
+              allUnions.map((u) => (
+                <tr key={u.id} className="p-8">
+                  <td className="px-6 py-4  ">
+                    <div className="flex items-center rounded-3xl ">
+                      <div className="flex items-center justify-center rounded-3xl ">
+                        <span className="mr-2">{u.registryNumber}</span>
+                        <HeartIcon className="h-5 w-5 " />
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium ">{u.date}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 ">
+                    {u?.avatarFrom ? (
+                      <img
+                        src={u.avatarFrom}
+                        className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
+                        alt={`${u.ensFrom} profile avatar`}
+                      />
+                    ) : (
+                      <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                    )}
+                  </td>
+                  <td className="px-6 py-4 ">
+                    <span className="px-2 inline-flex text-sm leading-5  ">
+                      {u.ensFrom}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4  text-sm text-gray-500">
+                    {u?.avatarFrom ? (
+                      <img
+                        src={u.avatarTo}
+                        className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
+                        alt={`${u.avatarTo} profile avatar`}
+                      />
+                    ) : (
+                      <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                    )}
+                  </td>
+                  <td className="px-6 py-4  text-left text-sm font-medium">
+                    <span className="px-2 inline-flex text-sm leading-5  ">
+                      {u.ensTo}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="md:hidden space-y-4 pb-8">
+        {allUnions?.length > 0 &&
+          allUnions.map((u) => {
+            {
+              return (
+                <div
+                  key={u.id}
+                  className="shadow shadow-rose-300/40 flex flex-col space-y-4 bg-rose-100 items-center justify-between py-4 px-8 rounded-3xl text-rose-500"
+                >
+                  <div className="flex w-full justify-between">
+                    <div className="flex items-center">
+                      <span className="mr-2">{u.registryNumber}</span>
+                      <HeartIcon className="h-5 w-5 " />
+                    </div>
+
+                    <span className="">{u.date}</span>
+                  </div>
+                  <div className="flex w-full justify-between">
+                    <div className="flex items-center justify-start">
+                      {u?.avatarFrom ? (
+                        <img
+                          src={u.avatarTo}
+                          className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
+                          alt={`${u.avatarTo} profile avatar`}
+                        />
+                      ) : (
+                        <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                      )}
+
+                      <span className="">{u.ensFrom}</span>
+                    </div>
+                    <div className="flex items-center justify-start">
+                      {u?.avatarFrom ? (
+                        <img
+                          src={u.avatarTo}
+                          className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
+                          alt={`${u.avatarTo} profile avatar`}
+                        />
+                      ) : (
+                        <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                      )}
+                      <span className="">{u.ensTo}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center justify-start">
-                  <span className="h-10 w-10 rounded-full bg-rose-200 mr-4"></span>
-                  <span className="">{u.ensTo}</span>
-                </div>
-                {/* <span className="col-span-2">{u.registryNumber}</span> */}
-              </div>
-            );
-          }
-        })}
-    </div>
+              );
+            }
+          })}
+      </div>
+    </>
   );
 }
