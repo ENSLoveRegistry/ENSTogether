@@ -105,12 +105,12 @@ export default function RegistryTable() {
 
   return (
     <>
-      <div className="hidden md:flex flex-col rounded-3xl bg-rose-100 shadow shadow-rose-300/40 ">
+      <div className="hidden md:flex flex-col rounded-3xl bg-rose-100 shadow-md shadow-rose-300/40 ">
         <table className=" rounded-full divide-y divide-rose-200 ">
           <tbody className=" divide-y divide-rose-200 text-rose-500 ">
             {allUnions?.length > 0 &&
               allUnions.map((u) => (
-                <tr key={u.id} className="p-8">
+                <tr key={u.id} className="p-2 flex items-center">
                   <td className="px-6 py-4  ">
                     <div className="flex items-center rounded-3xl ">
                       <div className="flex items-center justify-center rounded-3xl ">
@@ -118,7 +118,7 @@ export default function RegistryTable() {
                         <HeartIcon className="h-5 w-5 " />
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium ">{u.date}</div>
+                        <div className="text-sm  ">{u.date}</div>
                       </div>
                     </div>
                   </td>
@@ -149,7 +149,7 @@ export default function RegistryTable() {
                       <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
                     )}
                   </td>
-                  <td className="px-6 py-4  text-left text-sm font-medium">
+                  <td className="px-6 py-4  text-left text-sm ">
                     <span className="px-2 inline-flex text-sm leading-5  ">
                       {u.ensTo}
                     </span>
