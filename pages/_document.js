@@ -4,6 +4,20 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <NextScript
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-2X1P6B56GB"
+        ></NextScript>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-2X1P6B56GB');
+        `,
+          }}
+        />
         <meta charset="utf-8" />
         <meta name="title" content="ENSTogether" />
         <meta
@@ -42,13 +56,17 @@ export default function Document() {
           rel="mask-icon"
         />
         <meta name="twitter:site" content="@enstogether" />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary_large_image" key="twcard" />
         <meta property="og:url" content="https://enstogether.xyz" />
         <meta
           property="og:title"
           content="ENSTogether - A Love Registry on the Ethereum Blockchain"
         />
-        <meta property="og:image" content="./og.png" />
+        <meta
+          property="og:image"
+          content="https://res.cloudinary.com/aldi/image/upload/v1642685189/ENSTogether/og_weh9wb.png"
+          key="ogimage"
+        />
         <meta
           name="description"
           content="A fun social experience that seeks to extrapolate features of the marriage registry process to web3"
@@ -56,7 +74,7 @@ export default function Document() {
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff"></meta>
       </Head>
-      <body className="p-0 m-0">
+      <body className="p-0 m-0 bg-rose-100">
         <Main />
         <NextScript />
       </body>
