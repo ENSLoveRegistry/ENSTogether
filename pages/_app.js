@@ -2,7 +2,6 @@ import "../styles/globals.css";
 import User from "../context/userContext";
 import RegistryContext from "../context/registryContext";
 import Nav from "../components/Nav";
-import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import {
   InjectedConnector,

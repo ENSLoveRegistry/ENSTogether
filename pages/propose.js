@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { useContractRead, useNetwork } from "wagmi";
@@ -88,6 +89,10 @@ export default function Propose() {
   if (querying || networkData?.chain.id !== 5) {
     return (
       <div className="flex flex-1 justify-center items-center min-h-screen">
+        <Head>
+          <title>ENSTogether</title>
+        </Head>
+
         <svg
           className="animate-spin -ml-1 mr-3 h-24 w-24 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +119,10 @@ export default function Propose() {
 
   return (
     <div>
+      <Head>
+        <title>ENSTogether</title>
+      </Head>
+
       <ToastContainer
         position="bottom-right"
         autoClose={4000}

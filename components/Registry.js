@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { UnitedContext } from "../context/registryContext";
 import { fromUnixTime, format } from "date-fns";
-import { useEnsAvatar } from "wagmi";
 import { HeartIcon } from "@heroicons/react/solid";
 
 export default function RegistryTable() {
