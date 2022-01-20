@@ -57,8 +57,6 @@ export default function Propose() {
 
   useEffect(() => {
     const checkProposalsMade = async () => {
-      console.log("checking for proposals");
-
       const createdAt = proposalsMade?.createdAt;
       const dateCreated = fromUnixTime(createdAt).getTime();
       const deadline = addSeconds(dateCreated, time).getTime();
@@ -86,7 +84,7 @@ export default function Propose() {
     error: "bg-rose-100 text-rose-600 flex",
   };
 
-  if (querying || networkData?.chain.id !== 5) {
+  if (querying || networkData?.chain?.id !== 5) {
     return (
       <div className="flex flex-1 justify-center items-center min-h-screen">
         <Head>
