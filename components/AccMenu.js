@@ -27,7 +27,7 @@ export default function AccMenu() {
                   className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent"
                 />
               ) : (
-                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-orange-200"></div>
+                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-orange-200 "></div>
               )}
 
               <div className="flex flex-col justify-start px-1">

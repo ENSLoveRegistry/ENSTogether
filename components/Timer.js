@@ -49,8 +49,8 @@ const Timer = ({ deadline }) => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center items-center mt-24 lg:mt-0">
-      <div className=" p-4 bg-rose-100 text-rose-600 rounded-3xl max-w-lg  mt-4">
+    <div className="flex flex-col shadow shadow-rose-300/50 justify-center items-center mt-24 rounded-3xl lg:mt-0">
+      <div className=" p-4 bg-rose-100 text-rose-600 rounded-3xl max-w-lg  ">
         <div className="font-mono flex justify-between px-2 text-4xl md:text-7xl font-normal">
           <span>{countdown.days} </span>
           <span>:</span>

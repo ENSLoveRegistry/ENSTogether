@@ -71,7 +71,7 @@ export default function RegistryContext({ children }) {
   const fetcher = (query) => request(APIURL, query);
   const { data: unions, error } = useSWR(
     `{
-    unions(first: 12) {
+    unions(first: 100) {
       id
       from
       to
@@ -80,7 +80,8 @@ export default function RegistryContext({ children }) {
       currentStatus
     }
   }`,
-    fetcher
+    fetcher,
+    { refreshInterval: 4000 }
   );
   useEffect(() => {
     statsFromRegistry();

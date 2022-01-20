@@ -8,7 +8,7 @@ export default function Document() {
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-2X1P6B56GB"
         ></NextScript>
-        <script
+        <NextScript
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
@@ -64,7 +64,7 @@ export default function Document() {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/aldi/image/upload/v1642685189/ENSTogether/og_weh9wb.png"
+          content="https://res.cloudinary.com/aldi/image/upload/v1642696874/ENSTogether/enstogether_og_almish.png"
           key="ogimage"
         />
         <meta

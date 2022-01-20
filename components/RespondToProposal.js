@@ -100,7 +100,7 @@ export default function ProposalToRespond({
   }, [deadline, currentTime]);
 
   return (
-    <div className="flex flex-col flex-1 justify-center items-center min-h-screen ">
+    <div className="flex flex-col justify-center items-center min-h-screen p-4 ">
       {deadline > currentTime ? (
         <Timer deadline={deadline} />
       ) : (
@@ -108,11 +108,11 @@ export default function ProposalToRespond({
       )}
       {deadline > currentTime && (
         <h2 className=" text=xl md:text-2xl text-rose-600 mt-8 px-8">
-          Congratulations, someone loves you : )
+          Congratulations, someone loves you!
         </h2>
       )}
 
-      <div className="mt-8 flex flex-col px-4 space-y-2 justify-center p-12 bg-rose-100 text-rose-600  rounded-3xl max-w-lg text-xl">
+      <div className="shadow shadow-rose-300/50 mt-8 flex flex-col space-y-2 justify-center items-center text-center p-8 bg-rose-100 text-rose-600 rounded-3xl max-w-lg text-xl">
         <p>
           One proposal made from <span className="font-bold">{f} </span>
         </p>
@@ -126,7 +126,7 @@ export default function ProposalToRespond({
           )}
         </p>
         {deadline > currentTime ? (
-          <div className="flex justify-start">
+          <div className="flex justify-center">
             <button
               onClick={decline}
               disabled={processing && response == "decline"}

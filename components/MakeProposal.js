@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { toast } from "react-toastify";
+import { ExclamationCircleIcon, CheckCircleIcon } from "@heroicons/react/solid";
 
 import {
   useContractWrite,
@@ -9,6 +10,7 @@ import {
   useWaitForTransaction,
   useProvider,
   useEnsResolver,
+  useContractRead,
 } from "wagmi";
 
 const abi = require("../config/United");
@@ -32,7 +34,26 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
       args: [address, options],
     }
   );
-
+  const [, readproposals] = useContractRead(
+    {
+      addressOrName: contractAddress,
+      contractInterface: abi,
+    },
+    "proposals",
+    {
+      skip: true,
+    }
+  );
+  const [, isUnited] = useContractRead(
+    {
+      addressOrName: contractAddress,
+      contractInterface: abi,
+    },
+    "unionWith",
+    {
+      skip: true,
+    }
+  );
   const [{ data: res }] = useEnsResolver({
     name: searchENS,
   });
@@ -53,6 +74,9 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
     e.preventDefault();
     setProcessing(true);
     setError("");
+    const isProposal = await readproposals({ args: address });
+    const isInTheRegistry = await isUnited({ args: address });
+    console.log(isInTheRegistry);
 
     if (searchENS == "") {
       setProcessing(false);
@@ -62,6 +86,12 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
       setProcessing(false);
       setError("Not an ENS domain");
       return;
+    } else if (isInTheRegistry?.data?.exists) {
+      setProcessing(false);
+      setError(`${searchENS} is alredy registered, sorry :/`);
+    } else if (isProposal?.data?.exists) {
+      setProcessing(false);
+      setError(`${searchENS} has a pending proposal from other person`);
     } else if (address.toLowerCase() == currentAccount.toLowerCase()) {
       setProcessing(false);
       setError("Cant propose to yourself!");
@@ -113,59 +143,67 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
       if (res !== undefined && res?.address.length) {
         const a = await res.getAddress();
         setAddress(a);
-      }
+      } else setAddress(null);
     };
     if (ava) {
       setAvatar(ava);
-    }
+    } else setAvatar(null);
+
     if (waitResult?.data?.status >= 1) {
       setCanPropose(false);
       toast.success(`transaction confirmed`, {
         toastId: "transactionConfirmed",
       });
       setProcessing(false);
-
       return;
     }
     adda();
     return;
   }, [res, ava, waitResult]);
-
   const hash = proposalDone?.data?.hash;
 
   return (
-    <div className="flex flex-1 px-8 justify-center items-center min-h-screen md:pt-12 max-w-lg mx-auto  ">
+    <div className=" flex flex-1 px-8 justify-center items-center min-h-screen md:pt-20 lg:pt-0 max-w-lg mx-auto  ">
       <form
         onSubmit={searchForENS}
-        className="flex flex-col p-8 md:p-10 lg:p-12 bg-rose-100 rounded-2xl space-y-4 w-full "
+        className="shadow shadow-rose-300/50 flex flex-col justify-center items-center p-8 md:p-10 lg:p-12 bg-rose-100 rounded-2xl space-y-4 w-full "
       >
-        {/* <img
-          src={avatar}
-          alt={`Pfp NFT of ${ensName}`}
-          className="w-12 h-12 rounded-xl"
-        /> */}
+        {avatar && (
+          <img src={avatar} alt="" className="w-14 h-14 rounded-full" />
+        )}
 
         <label
-          htmlFor="ensSearch"
+          htmlFor="text"
           className="block  font-medium text-rose-500 text-2xl"
         >
           Propose to
         </label>
-        <div className="mt-4">
+        <div className="mt-4 relative rounded-full shadow-lg shadow-rose-200/50  ">
           <input
             type="text"
-            id="ensSearch"
-            className="placeholder-rose-400 shadow-sm shadow-rose-200/50 p-4 block w-full border-rose-500 rounded-full bg-rose-50 text-rose-600 focus:ring-rose-400 active:ring-rose-400 selected:ring-rose-400 "
+            autoComplete="text"
+            autoCorrect="false"
+            name="text"
+            id="text"
+            className="apparence-none placeholder-rose-400 py-2 px-4 block w-72 border-rose-500 rounded-full bg-rose-50 text-rose-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
             placeholder="mylover.eth"
             onChange={(e) => {
               setSearchENS(e.target.value), setError("");
             }}
           />
+          {res && (
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <CheckCircleIcon
+                className="h-5 w-5 text-emerald-400"
+                aria-hidden="true"
+              />
+            </div>
+          )}
         </div>
         <button
           type="submit"
           disabled={processing}
-          className="rounded-full font-bold text-xl bg-rose-400 text-white py-2 mt-2 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
+          className="rounded-full w-72 font-bold text-xl bg-rose-400 text-white py-2 mt-2 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
         >
           {processing && (
             <svg
@@ -200,13 +238,21 @@ export default function MakeProposal({ currentAccount, setCanPropose, read }) {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <span className="flex justify-center text-sm text-center text-rose-600 font-semibold underline">
+            <span className="flex justify-center text-xs text-center text-rose-600 font-semibold underline">
               View on Goerli
             </span>
           </a>
         )}
-        {proposalDone?.error && <div>{proposalDone.error.message}</div>}
-        {error && <h2 className="text-rose-600 mt-4">{error}</h2>}
+        {proposalDone?.error && (
+          <div className="bg-rose-200 py-1 px-2 rounded-full border-rose-300">
+            {proposalDone.error.message}
+          </div>
+        )}
+        {error && (
+          <span className="bg-rose-200 py-1 px-6 text-rose-600 rounded-md border border-rose-600 text-center">
+            {error}
+          </span>
+        )}
       </form>
     </div>
   );
