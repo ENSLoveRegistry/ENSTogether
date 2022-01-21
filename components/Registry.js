@@ -17,9 +17,6 @@ export default function RegistryTable() {
     return [converted, avatar];
   };
 
-  // const [getEnsAvatar] = useEnsAvatar({
-  //   skip: true,
-  // });
   const formatDate = (d) => {
     const date = fromUnixTime(d);
     const formattedDate = format(date, "MM/dd/yy");
@@ -109,8 +106,8 @@ export default function RegistryTable() {
           <tbody className=" divide-y divide-rose-200 text-rose-500 ">
             {allUnions?.length > 0 &&
               allUnions.map((u) => (
-                <tr key={u.id} className="p-2  ">
-                  <td className="px-6 py-4  ">
+                <tr key={u.id} className="p-1  ">
+                  <td className="px-6 py-2  ">
                     <div className="flex items-center rounded-3xl ">
                       <div className="flex items-center justify-center rounded-3xl ">
                         <span className="mr-2">{u.registryNumber}</span>
@@ -121,7 +118,7 @@ export default function RegistryTable() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 ">
+                  <td className="px-6 py-2 ">
                     {u?.avatarFrom ? (
                       <img
                         src={u.avatarFrom}
@@ -132,13 +129,13 @@ export default function RegistryTable() {
                       <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
                     )}
                   </td>
-                  <td className="px-6 py-4 ">
+                  <td className="px-6 py-2 ">
                     <span className="px-2 inline-flex text-sm leading-5  ">
                       {u.ensFrom}
                     </span>
                   </td>
-                  <td className="px-6 py-4  text-sm text-gray-500">
-                    {u?.avatarFrom ? (
+                  <td className="px-6 py-2  text-sm text-gray-500">
+                    {u?.avatarTo ? (
                       <img
                         src={u.avatarTo}
                         className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
@@ -148,7 +145,7 @@ export default function RegistryTable() {
                       <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
                     )}
                   </td>
-                  <td className="px-6 py-4 text-left  ">
+                  <td className="px-6 py-2 text-left  ">
                     <span className="px-2 inline-flex text-sm leading-5  ">
                       {u.ensTo}
                     </span>
@@ -180,9 +177,9 @@ export default function RegistryTable() {
                     <div className="flex items-center justify-start">
                       {u?.avatarFrom ? (
                         <img
-                          src={u.avatarTo}
+                          src={u.avatarFrom}
                           className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
-                          alt={`${u.avatarTo} profile avatar`}
+                          alt={`${u.avatarFrom} profile avatar`}
                         />
                       ) : (
                         <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
@@ -191,11 +188,11 @@ export default function RegistryTable() {
                       <span className="">{u.ensFrom}</span>
                     </div>
                     <div className="flex items-center justify-start">
-                      {u?.avatarFrom ? (
+                      {u?.avatarTo ? (
                         <img
-                          src={u.avatarFrom}
+                          src={u.avatarTo}
                           className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
-                          alt={`${u.avatarFrom} profile avatar`}
+                          alt={`${u.avatarTo} profile avatar`}
                         />
                       ) : (
                         <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />

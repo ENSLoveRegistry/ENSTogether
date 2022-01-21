@@ -91,21 +91,6 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
     }
   };
 
-  const check = async () => {
-    console.log("checking");
-    const res = await readUnion();
-    setUnion(res?.data);
-    if (res && res?.data.currentStatus.toString() == "0") {
-      setUpdateTo(status[0]);
-      setCurrentStatus("together");
-      getTokenId();
-    } else if (res && res?.data.currentStatus.toString() == "1") {
-      setUpdateTo(status[1]);
-      setCurrentStatus("paused");
-      getTokenId();
-    }
-    return res;
-  };
   const getTokenId = async () => {
     const { ethereum } = window;
     const provider = new ethers.providers.Web3Provider(ethereum);
@@ -120,35 +105,22 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
   };
 
   useEffect(() => {
+    const check = async () => {
+      const res = await readUnion();
+      setUnion(res?.data);
+      if (res && res?.data?.currentStatus.toString() == "0") {
+        setUpdateTo(status[0]);
+        setCurrentStatus("together");
+        getTokenId();
+      } else if (res && res?.data?.currentStatus.toString() == "1") {
+        setUpdateTo(status[1]);
+        setCurrentStatus("paused");
+        getTokenId();
+      }
+      return res;
+    };
     check();
   }, []);
-
-  // if (!union) {
-  //   return (
-  //     <div className="max-w-6xl w-full space-y-4  flex flex-col justify-center items-center">
-  //       <svg
-  //         className="animate-spin -ml-1 mr-3 h-24 w-24 text-white"
-  //         xmlns="http://www.w3.org/2000/svg"
-  //         fill="none"
-  //         viewBox="0 0 24 24"
-  //       >
-  //         <circle
-  //           className="opacity-25"
-  //           cx="12"
-  //           cy="12"
-  //           r="10"
-  //           stroke="currentColor"
-  //           strokeWidth="4"
-  //         ></circle>
-  //         <path
-  //           className="opacity-75"
-  //           fill="currentColor"
-  //           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-  //         ></path>
-  //       </svg>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className=" flex flex-col justify-center space-y-10 mt-16 md:mt-16 md:space-y-0 lg:mt-0 md:flex-row md:justify-between items-center min-h-screen md:space-x-12 text-rose-600 md:mx-auto md:max-w-2xl ">

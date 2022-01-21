@@ -25,9 +25,9 @@ export default function FAq() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
-                  A couples registry on the Ethereum blockchain. <br />A fun
-                  experience that seeks to extrapolate some features of the
-                  marital registration process to web3.
+                  A couples registry on the Ethereum blockchain. <br />
+                  Building a fun experience that seeks to extrapolate some
+                  features of the marital registration process to web3.
                 </Disclosure.Panel>
               </>
             )}
