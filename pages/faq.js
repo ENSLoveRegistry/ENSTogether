@@ -60,7 +60,7 @@ export default function FAq() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      LEARN HERE.
+                      LEARN HERE
                     </a>
                   </Link>
                 </Disclosure.Panel>
