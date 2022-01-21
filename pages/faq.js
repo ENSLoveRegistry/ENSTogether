@@ -53,7 +53,7 @@ export default function FAq() {
                   username and avatar linked to your ethereum address, a
                   decentralized identity that you can use across different
                   services on web3. There are many other benefits of having an
-                  ENS name.
+                  ENS name
                   <Link passHref href={"https://ens.domains"}>
                     <a
                       className="ml-2 font-bold tracking-tight text-sm"
