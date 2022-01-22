@@ -7,7 +7,7 @@ export default function Custom404() {
         <Link passHref href={"/"}>
           <a>
             <button className="mt-4 py-1 px-4 bg-rose-200 hover:bg-rose-300 hover:text-rose-700 rounded-full">
-              Back to home
+              Take me home
             </button>
           </a>
         </Link>

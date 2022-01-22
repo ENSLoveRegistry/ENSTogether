@@ -106,9 +106,9 @@ export default function AccMenu() {
                     className={`${
                       active ? "bg-rose-400 text-rose-100" : "text-rose-500"
                     } md:rounded-t-3xl  w-full px-2 py-2 text-sm font-bold`}
-                    onClick={() => router.push("/faq")}
+                    onClick={() => router.push("/help")}
                   >
-                    FAQ
+                    Help - FAQ
                   </button>
                 )}
               </Menu.Item>
