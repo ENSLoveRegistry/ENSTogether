@@ -79,7 +79,7 @@ export default function Home() {
             className=" mt-6 lg:mt-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full hover:opacity-60 text-bold text-dm md:text-md lg:text-lg"
             onClick={() => connect(mm)}
           >
-            Connect Wallet.
+            Connect Wallet
           </button>
         )}
         {open ? (
