@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Head from "next/head";
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/userContext";
 import Confetti from "react-confetti";
@@ -24,10 +23,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>ENSTogether</title>
-      </Head>
-
       {size.height > 0 && size.width > 0 && hearts && (
         <Confetti
           width={size.width}

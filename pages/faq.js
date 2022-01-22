@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 
@@ -7,10 +6,6 @@ import Link from "next/link";
 export default function FAq() {
   return (
     <>
-      <Head>
-        <title>ENSTogether</title>
-      </Head>
-
       <div className="w-full px-4 py-24 min-h-screen flex mx-auto justify-center items-center ">
         <div className="w-full max-w-2xl p-2 mx-auto bg-rose-50 rounded-2xl">
           <Disclosure>
@@ -53,14 +48,14 @@ export default function FAq() {
                   username and avatar linked to your ethereum address, a
                   decentralized identity that you can use across different
                   services on web3. There are many other benefits of having an
-                  ENS name
+                  ENS name.
                   <Link passHref href={"https://ens.domains"}>
                     <a
                       className="ml-2 font-bold tracking-tight text-sm"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      LEARN HERE.
+                      LEARN HERE
                     </a>
                   </Link>
                 </Disclosure.Panel>

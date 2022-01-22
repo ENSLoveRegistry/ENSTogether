@@ -4,27 +4,12 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <NextScript
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-2X1P6B56GB"
-        ></NextScript>
-        <NextScript
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-2X1P6B56GB');
-        `,
-          }}
-        />
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <meta name="title" content="ENSTogether" />
         <meta
           name="description"
           content="A Love Registry on the Ethereum Blockchain"
         />
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <link href="/static/favicons/favicon.ico" rel="shortcut icon" />
         <link href="/static/favicons/site.webmanifest" rel="manifest" />
         <link
