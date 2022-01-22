@@ -59,7 +59,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center max-w-2xl">
           A love registry on the Ethereum blockchain
         </h1>
-        <h2 className="mt-4  lg:mt-6 font-light text-lg text-xl md:text-2xl lg:text-3xl text-center">
+        <h2 className="mt-4  lg:mt-6 font-light text-lg  md:text-2xl lg:text-3xl text-center">
           Create a love proposal and share it with your partner <br />
           Wait for confirmation and enter this registry
         </h2>
