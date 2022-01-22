@@ -65,7 +65,7 @@ export default function Home() {
         </h2>
         <h3 className="mt-4  lg:mt-6 font-medium text-rose-400 text-sm text-center py-2 px-8 border border-rose-200 rounded-3xl">
           To be able to register you must have an active ENS name.
-          <Link passHref href={"/faq"}>
+          <Link passHref href={"/help"}>
             <a>
               <span className="ml-2 text-rose-500 text-xs font-bold tracking-tighter hover:text-rose-600 ">
                 &rarr; LEARN WHY

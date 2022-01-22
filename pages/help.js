@@ -3,7 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 
 import Link from "next/link";
 
-export default function FAq() {
+export default function Help() {
   return (
     <>
       <div className="w-full px-4 py-24 min-h-screen flex mx-auto justify-center items-center ">
@@ -98,16 +98,10 @@ export default function FAq() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
-                  Getting married involves costs, right? xD <br />
-                  Jokes aside, there are two reasons behind this decision:{" "}
+                  There are two reasons behind this decision: <br />
+                  Reduce spammy registrations and ensure true intention and
+                  commitment.
                   <br />
-                  Avoid spam registrations and ensure true intention and
-                  commitment, since an address can only be registered once.{" "}
-                  <br />
-                  <span className="text-sm">
-                    * Unless the register modified or canceled. See section
-                    below.
-                  </span>
                 </Disclosure.Panel>
               </>
             )}
