@@ -1,11 +1,7 @@
-import Head from "next/head";
 import Link from "next/link";
 export default function Custom404() {
   return (
     <>
-      <Head>
-        <title>ENSTogether</title>
-      </Head>
       <div className="flex flex-col  justify-center items-center min-h-screen text-rose-600">
         <h1 className="text-4xl tracking-tight font-medium ">NOT FOUND</h1>
         <Link passHref href={"/"}>

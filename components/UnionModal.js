@@ -3,7 +3,7 @@ import { useState, useEffect, Fragment } from "react";
 import { fromUnixTime, format } from "date-fns";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import { useEnsLookup, useNetwork } from "wagmi";
+import { useEnsLookup } from "wagmi";
 import { toast } from "react-toastify";
 import Image from "next/image";
 
