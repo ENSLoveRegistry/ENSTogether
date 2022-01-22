@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }) {
             connectors={connectors}
             provider={provider}
           >
-            {/* <Nav /> */}
+            <Nav />
             <Component {...pageProps} />
           </RegistryContext>
         </User>
