@@ -23,7 +23,7 @@ export default function Nav() {
             </h3>
           </a>
         </Link>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           {switchNetwork && networkData.chain.id !== 5 && (
             <NetworkSwitcher
               networkData={networkData}
@@ -49,7 +49,7 @@ export default function Nav() {
           </Link>
 
           <AccMenu />
-        </div>
+        </div> */}
       </div>
     );
   return (
@@ -60,7 +60,7 @@ export default function Nav() {
         </a>
       </Link>
 
-      <Connect />
+      {/* <Connect /> */}
     </div>
   );
 }

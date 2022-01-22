@@ -74,15 +74,18 @@ export default function Home() {
           </Link>
         </h3>
 
-        {!accountData && (
+        {/* {!accountData && (
           <button
             className=" mt-6 lg:mt-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full hover:opacity-60 text-bold text-dm md:text-md lg:text-lg"
-            onClick={() => connect(mm)}
+            // onClick={() => connect(mm)}
           >
-            Connect Wallet
+            Connect
           </button>
-        )}
-        {open ? (
+        )} */}
+        <div className=" mt-6 lg:mt-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full hover:opacity-60 text-bold text-dm md:text-md lg:text-lg">
+          Coming Soon!
+        </div>
+        {/* {open ? (
           <div className="fixed z-10 bottom-4 md:bottom-6 flex items-center rounded-md  bg-rose-200 border border-rose-300 text-rose-600  py-2 px-8">
             <p className="text-sm lg:text-md">
               Currently working only on Goerli Network
@@ -91,7 +94,7 @@ export default function Home() {
               <XIcon className="text-rose-600 h-3 w-3 absolute z-20 bottom-0 left-3" />
             </button>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </>
   );
