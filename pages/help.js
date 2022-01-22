@@ -166,7 +166,7 @@ export default function Help() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
-                  The contract is not audited.
+                  The contract is not audited and still under development.
                   <br />
                   <Link
                     href={
