@@ -47,8 +47,8 @@ export default function RegistryContext({ children }) {
     "cost"
   );
 
+  //Fetching stats from registry
   const statsFromRegistry = async () => {
-    // console.log("fetchDataFromRegistry");
     try {
       {
         c != undefined
