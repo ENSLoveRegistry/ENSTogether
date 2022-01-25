@@ -12,9 +12,9 @@ export default function ProposalToRespond({
   proposalsMade,
   time,
   from,
-  readUnion,
-  read,
   currentAccount,
+  read,
+  setCanPropose,
 }) {
   //state
   const { createdAt } = proposalsMade;
@@ -42,12 +42,14 @@ export default function ProposalToRespond({
     try {
       const tx = await contract.respondToProposal(1, t, f).then(() => {
         contract.on("ProposalResponded", () => {
-          toast.success("💍 You are getting registered!");
+          toast.success("💍 You are getting registered!", {
+            toastId: "declined",
+          });
         });
         contract.on("GotUnited", () => {
           setProcessing(false);
-          toast.success("You're officially registered!");
-          readUnion();
+          toast.success("You're officially registered!", { toastId: "united" });
+          read();
         });
       });
     } catch (err) {
@@ -66,7 +68,9 @@ export default function ProposalToRespond({
       const r = await contract.respondToProposal(2, t, f).then(() =>
         contract.on("ProposalCancelled", () => {
           setProcessing(false);
-          toast.success("Proposal succesfully declined");
+          toast.success("Proposal succesfully declined", {
+            toastId: "declined",
+          });
           read();
         })
       );
@@ -92,10 +96,6 @@ export default function ProposalToRespond({
       const now = new Date().getTime();
       setCurrentTime(now);
     }, 1000);
-    if (deadline < currentTime) {
-      read();
-      return;
-    }
     return () => clearInterval();
   }, [deadline, currentTime]);
 
@@ -191,7 +191,7 @@ export default function ProposalToRespond({
         ) : (
           <button
             className=" rounded-full font-bold text-xl bg-rose-400 px-8 text-white py-2 mt-4 flex items-center justify-center disabled:opacity-60 hover:bg-rose-500"
-            onClick={() => setProposalToApprove(null)}
+            onClick={() => setCanPropose(true)}
           >
             Propose
           </button>

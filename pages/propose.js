@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { useContractRead, useNetwork } from "wagmi";
+// import useSWR from "swr";
 
 //Components
 import MakeProposal from "../components/MakeProposal";
@@ -9,7 +10,7 @@ import PendingProposal from "../components/PendingProposal";
 import UnionModal from "../components/UnionModal";
 
 //notification
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { fromUnixTime, addSeconds } from "date-fns";
@@ -36,6 +37,9 @@ export default function Propose() {
       watch: true,
     }
   );
+  // const { data: proposalsMade } = useSWR({ args: accountData?.address }, read, {
+  //   refreshInterval: 10000,
+  // });
   const [{ data: union }, readUnion] = useContractRead(
     {
       addressOrName: contractAddress,
@@ -49,18 +53,21 @@ export default function Propose() {
       watch: true,
     }
   );
-  const [{ data: networkData }] = useNetwork();
 
-  const notifyError = (msg) => toast.error(msg);
-  const notifySuccess = (msg) => toast.success(msg);
+  const [{ data: networkData }] = useNetwork();
 
   useEffect(() => {
     const checkProposalsMade = async () => {
+      console.log("fass");
       const createdAt = proposalsMade?.createdAt;
       const dateCreated = fromUnixTime(createdAt).getTime();
       const deadline = addSeconds(dateCreated, time).getTime();
 
-      if (now > deadline || proposalsMade.exists == false) {
+      if (
+        now > deadline ||
+        proposalsMade?.exists == false ||
+        proposalsMade?.expired == true
+      ) {
         setPExpired(true);
         setQuerying(false);
         setCanPropose(true);
@@ -77,11 +84,6 @@ export default function Propose() {
     }
     return;
   }, [proposalsMade, union]);
-
-  const contextClass = {
-    success: "bg-emerald-100 text-emerald-600 flex",
-    error: "bg-rose-100 text-rose-600 flex",
-  };
 
   if (querying || networkData?.chain?.id !== 5) {
     return (
@@ -109,6 +111,10 @@ export default function Propose() {
       </div>
     );
   }
+  const contextClass = {
+    success: "bg-emerald-100 text-emerald-600 flex",
+    error: "bg-rose-100 text-rose-600 flex",
+  };
 
   return (
     <div>
@@ -130,7 +136,7 @@ export default function Propose() {
           "flex text-md font-bold p-6" + contextClass[type || "default"]
         }
       />
-      {querying && <h1>Loading...</h1>}
+
       <div>
         {proposalsMade?.from == accountData?.address &&
           !querying &&
@@ -138,7 +144,7 @@ export default function Propose() {
           !union?.exists && (
             <PendingProposal
               proposalsMade={proposalsMade}
-              to={proposalsMade.to}
+              to={proposalsMade?.to}
               setCanPropose={setCanPropose}
               currentAccount={accountData?.address}
               time={time}
@@ -153,9 +159,10 @@ export default function Propose() {
               proposalsMade={proposalsMade}
               currentAccount={accountData?.address}
               time={time}
-              from={proposalsMade.from}
+              from={proposalsMade?.from}
               readUnion={readUnion}
               read={read}
+              setCanPropose={setCanPropose}
             />
           )}
         {union?.exists == true && !querying && (
@@ -167,10 +174,10 @@ export default function Propose() {
         )}
         {proposalsMade && !querying && canPropose && !union?.exists && (
           <MakeProposal
-            notifyError={notifyError}
-            notifySuccess={notifySuccess}
             currentAccount={accountData?.address}
             setCanPropose={setCanPropose}
+            time={time}
+            canPropose={canPropose}
             read={read}
           />
         )}

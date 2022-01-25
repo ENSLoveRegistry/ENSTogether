@@ -3,9 +3,10 @@ import { useState, useEffect, Fragment } from "react";
 import { fromUnixTime, format } from "date-fns";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
-import { useEnsLookup } from "wagmi";
+import { useEnsLookup, useWaitForTransaction } from "wagmi";
 import { toast } from "react-toastify";
 import Image from "next/image";
+import useSWR from "swr";
 
 const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
@@ -22,12 +23,14 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
   const date = union ? fromUnixTime(union?.createdAt).getTime() : 0;
   const formattedDate = format(date, "MMM do yyyy");
 
-  const notifyError = (msg) => toast.error(msg);
-  const notifySuccess = (msg) => toast.success(msg);
-
   const [{ data: ensName }] = useEnsLookup({
     address: currentAccount == union?.from ? union?.to : union?.from,
   });
+  const [{ data: tCompleted, error }, wait] = useWaitForTransaction({
+    skip: true,
+  });
+
+  // const { data: u } = useSWR({ args: currentAccount }, readUnion);
 
   const updateStatus = async () => {
     setProcessing(true);
@@ -38,13 +41,13 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
     const options = { value: ethers.utils.parseEther("0.005") };
 
     let num;
-
+    //Status check
     if (
       (union.currentStatus.toString() == "0" && updateTo == "together") ||
       (union.currentStatus.toString() == "1" && updateTo == "paused")
     ) {
       setProcessing(false);
-      notifyError(
+      toast.error(
         `You need to select a new status. Current status: ${updateTo} `
       );
       return;
@@ -55,26 +58,19 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
     } else if (updateTo == "separated") {
       num = 2;
     }
+
     try {
-      let message = "sign to update status";
+      let message = "Sign to update your status";
       const signed = await signer.signMessage(message);
-      const tx = await contract.updateUnion(num, options).then(() =>
-        contract.on("UnionStatusUpdated", () => {
-          if (num === 2) {
-            setProcessing(false);
-            notifySuccess(`Success, you've updated the status to: ${updateTo}`);
-            check();
-            return;
-          } else {
-            setProcessing(false);
-            notifySuccess(`Success, you've updated the status to: ${updateTo}`);
-            check();
-            return;
-          }
-        })
-      );
-    } catch (err) {
-      handleMMerror(err);
+      const tx = await contract.updateUnion(num, options);
+      wait({ hash: tx.hash }).then(() => {
+        setProcessing(false),
+          toast.success(`Success, you've updated the status to: ${updateTo}`, {
+            toastId: "statusUpdated",
+          });
+      });
+    } catch (error) {
+      handleMMerror(error);
     }
   };
 
@@ -83,10 +79,10 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
     const code = await err.code;
     switch (code) {
       case 4001:
-        notifyError("Transaction rejected by user");
+        toast.error("Transaction rejected by user");
         break;
       default:
-        notifyError(err);
+        toast.error(err);
         break;
     }
   };
@@ -119,8 +115,10 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
       }
       return res;
     };
+
     check();
-  }, []);
+    return () => {};
+  }, [tCompleted]);
 
   return (
     <div className=" flex flex-col justify-center space-y-10 mt-16 md:mt-16 md:space-y-0 lg:mt-0 md:flex-row md:justify-between items-center min-h-screen md:space-x-12 text-rose-600 md:mx-auto md:max-w-2xl ">
@@ -129,13 +127,13 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
         <p className="mt-8">
           With: {ensName ? ensName : "loading..."}
           <br />
-          Since: {formattedDate}
+          Since: {date !== 0 && formattedDate}
         </p>
         <p className="">Currently: {currentStatus} </p>
         <div className=" mt-8">
           <p className="font-medium">Change your status: </p>
           <Listbox value={updateTo} onChange={setUpdateTo}>
-            <div className="relative mt-2">
+            <div className="relative mt-2 z-20">
               <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg  cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-orange-300 focus-visible:ring-offset-2 focus-visible:border-indigo-500 sm:text-sm">
                 <span className="block truncate">{updateTo}</span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
