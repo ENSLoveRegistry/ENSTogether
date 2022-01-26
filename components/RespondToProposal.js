@@ -3,7 +3,13 @@ import { ethers } from "ethers";
 import { fromUnixTime, format, addSeconds } from "date-fns";
 import Timer from "./Timer";
 import { toast } from "react-toastify";
-import { useEnsLookup } from "wagmi";
+import {
+  useEnsLookup,
+  useContractWrite,
+  useContract,
+  useProvider,
+  useSigner,
+} from "wagmi";
 
 const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
@@ -13,8 +19,8 @@ export default function ProposalToRespond({
   time,
   from,
   currentAccount,
-  read,
   setCanPropose,
+  mutate,
 }) {
   //state
   const { createdAt } = proposalsMade;
@@ -32,50 +38,93 @@ export default function ProposalToRespond({
   const [{ data: t }] = useEnsLookup({
     address: currentAccount,
   });
+
+  const provider = useProvider();
+
+  const contract = useContract({
+    addressOrName: contractAddress,
+    contractInterface: abi,
+    signerOrProvider: provider,
+  });
+
+  const [proposalResponse, write] = useContractWrite(
+    {
+      addressOrName: contractAddress,
+      contractInterface: abi,
+    },
+    "respondToProposal",
+    { skip: true }
+  );
+
+  const [_, getSigner] = useSigner({
+    skip: true,
+  });
+
   const accept = async () => {
     setProcessing(true);
     setResponse("accept");
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, abi, signer);
     try {
-      const tx = await contract.respondToProposal(1, t, f).then(() => {
-        contract.on("ProposalResponded", () => {
-          toast.success("💍 You are getting registered!", {
-            toastId: "declined",
-          });
-        });
-        contract.on("GotUnited", () => {
-          setProcessing(false);
-          toast.success("You're officially registered!", { toastId: "united" });
-          read();
-        });
-      });
+      const signer = await getSigner();
+      let message = "Accept Proposal";
+      await signer.signMessage(message);
     } catch (err) {
       handleMMerror(err);
+      return;
+    }
+    const response = await write({ args: [1, t, f] }).then(
+      contract.on("ProposalResponded", (to) => {
+        if (currentAccount == to) {
+          toast.success("You are getting together :)", {
+            toastId: "joining",
+          });
+        }
+      })
+    );
+    const tx = await response?.data?.wait();
+    console.log(response);
+    console.log("tx", tx);
+    if (tx?.confirmations >= 1) {
+      setCanPropose(true);
+      toast.success(`Transaction Confirmed`, {
+        toastId: "united",
+      });
+      setProcessing(false);
+      mutate();
+      return;
     }
   };
 
   const decline = async () => {
     setProcessing(true);
     setResponse("decline");
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, abi, signer);
     try {
-      const r = await contract.respondToProposal(2, t, f).then(() =>
-        contract.on("ProposalCancelled", () => {
-          setProcessing(false);
-          toast.success("Proposal succesfully declined", {
-            toastId: "declined",
-          });
-          read();
-        })
-      );
+      const signer = await getSigner();
+      let message = "Decline Proposal";
+      await signer.signMessage(message);
     } catch (err) {
       handleMMerror(err);
+      return;
+    }
+    const response = await write({ args: [2, t, f] }).then(
+      contract.on("ProposalCancelled", (to) => {
+        if (currentAccount == to) {
+          toast.success("Declining Love Proposal", {
+            toastId: "declined",
+          });
+        }
+      })
+    );
+    const tx = await response?.data?.wait();
+    console.log(response);
+    console.log("tx", tx);
+    if (tx?.confirmations >= 1) {
+      setCanPropose(true);
+      toast.success(`transaction confirmed`, {
+        toastId: "trConfirmed",
+      });
+      setProcessing(false);
+      mutate();
+      return;
     }
   };
   const handleMMerror = async (err) => {
@@ -97,7 +146,7 @@ export default function ProposalToRespond({
       setCurrentTime(now);
     }, 1000);
     return () => clearInterval();
-  }, [deadline, currentTime]);
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen p-4 ">
@@ -195,6 +244,11 @@ export default function ProposalToRespond({
           >
             Propose
           </button>
+        )}
+        {proposalResponse?.error && (
+          <div className="bg-rose-200 py-1 px-6 rounded-md border border-rose-600 text-rose-600">
+            {proposalResponse.error.message}
+          </div>
         )}
       </div>
     </div>

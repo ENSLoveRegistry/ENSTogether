@@ -6,14 +6,13 @@ import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
 import { useEnsLookup, useWaitForTransaction } from "wagmi";
 import { toast } from "react-toastify";
 import Image from "next/image";
-import useSWR from "swr";
 
 const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
 
 const status = ["together", "paused", "separated"];
 
-const UnionModal = ({ currentAccount, readUnion, un }) => {
+const UnionModal = ({ currentAccount, readUnion, setCanPropose, mutate }) => {
   const [union, setUnion] = useState(null);
   const [updateTo, setUpdateTo] = useState(null);
   const [currentStatus, setCurrentStatus] = useState(null);
@@ -29,8 +28,6 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
   const [{ data: tCompleted, error }, wait] = useWaitForTransaction({
     skip: true,
   });
-
-  // const { data: u } = useSWR({ args: currentAccount }, readUnion);
 
   const updateStatus = async () => {
     setProcessing(true);
@@ -60,15 +57,28 @@ const UnionModal = ({ currentAccount, readUnion, un }) => {
     }
 
     try {
-      let message = "Sign to update your status";
+      let message = `Sign to update your status to ${updateTo}`;
       const signed = await signer.signMessage(message);
       const tx = await contract.updateUnion(num, options);
-      wait({ hash: tx.hash }).then(() => {
-        setProcessing(false),
-          toast.success(`Success, you've updated the status to: ${updateTo}`, {
-            toastId: "statusUpdated",
-          });
-      });
+      wait({ hash: tx.hash })
+        .then(() => {
+          setProcessing(false),
+            toast.success(
+              `Success, you've updated the status to: ${updateTo}`,
+              {
+                toastId: "statusUpdated",
+              }
+            );
+          if (num == 2) {
+            setCanPropose(true);
+            mutate();
+            return;
+          }
+        })
+        .then(() => {
+          readUnion();
+          return;
+        });
     } catch (error) {
       handleMMerror(error);
     }
