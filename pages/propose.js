@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { useContractRead, useNetwork } from "wagmi";
-// import useSWR from "swr";
 
 //Components
 import MakeProposal from "../components/MakeProposal";
@@ -18,28 +17,14 @@ const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
 
 export default function Propose() {
-  const { time, accountData } = useContext(UserContext);
+  const { time, accountData, proposalsMade, mutate } = useContext(UserContext);
   const [querying, setQuerying] = useState(true);
   const [pExpired, setPExpired] = useState(null);
   const [canPropose, setCanPropose] = useState(false);
   const now = new Date().getTime();
 
-  const [{ data: proposalsMade }, read] = useContractRead(
-    {
-      addressOrName: contractAddress,
-      contractInterface: abi,
-    },
-    "proposals",
-    {
-      args: accountData?.address,
-    },
-    {
-      watch: true,
-    }
-  );
-  // const { data: proposalsMade } = useSWR({ args: accountData?.address }, read, {
-  //   refreshInterval: 10000,
-  // });
+  let p = proposalsMade?.data;
+
   const [{ data: union }, readUnion] = useContractRead(
     {
       addressOrName: contractAddress,
@@ -53,21 +38,15 @@ export default function Propose() {
       watch: true,
     }
   );
-
   const [{ data: networkData }] = useNetwork();
-
   useEffect(() => {
     const checkProposalsMade = async () => {
-      console.log("fass");
-      const createdAt = proposalsMade?.createdAt;
+      await readUnion();
+      const createdAt = p?.createdAt;
       const dateCreated = fromUnixTime(createdAt).getTime();
       const deadline = addSeconds(dateCreated, time).getTime();
 
-      if (
-        now > deadline ||
-        proposalsMade?.exists == false ||
-        proposalsMade?.expired == true
-      ) {
+      if (now > deadline || p?.exists == false || p?.expired == true) {
         setPExpired(true);
         setQuerying(false);
         setCanPropose(true);
@@ -78,13 +57,18 @@ export default function Propose() {
       return;
     };
 
-    if (proposalsMade) {
+    if (p) {
       checkProposalsMade();
       return;
     }
     return;
-  }, [proposalsMade, union]);
+  }, [p]);
 
+  const contextClass = {
+    success: "bg-emerald-100 text-emerald-600 flex",
+    error: "bg-rose-100 text-rose-600 flex",
+  };
+  // console.log(p?.to, accountData?.address, pExpired, u?.exists);
   if (querying || networkData?.chain?.id !== 5) {
     return (
       <div className="flex flex-1 justify-center items-center min-h-screen">
@@ -111,10 +95,6 @@ export default function Propose() {
       </div>
     );
   }
-  const contextClass = {
-    success: "bg-emerald-100 text-emerald-600 flex",
-    error: "bg-rose-100 text-rose-600 flex",
-  };
 
   return (
     <div>
@@ -138,31 +118,30 @@ export default function Propose() {
       />
 
       <div>
-        {proposalsMade?.from == accountData?.address &&
+        {p?.from == accountData?.address &&
           !querying &&
           !canPropose &&
           !union?.exists && (
             <PendingProposal
-              proposalsMade={proposalsMade}
-              to={proposalsMade?.to}
+              proposalsMade={p}
+              to={p?.to}
               setCanPropose={setCanPropose}
               currentAccount={accountData?.address}
               time={time}
-              read={read}
+              mutate={mutate}
             />
           )}
-        {proposalsMade?.to == accountData?.address &&
+        {p?.to == accountData?.address &&
           !pExpired &&
           !querying &&
           !union?.exists && (
             <ProposalToRespond
-              proposalsMade={proposalsMade}
+              proposalsMade={p}
               currentAccount={accountData?.address}
               time={time}
-              from={proposalsMade?.from}
-              readUnion={readUnion}
-              read={read}
+              from={p?.from}
               setCanPropose={setCanPropose}
+              mutate={mutate}
             />
           )}
         {union?.exists == true && !querying && (
@@ -170,15 +149,18 @@ export default function Propose() {
             un={union}
             currentAccount={accountData?.address}
             readUnion={readUnion}
+            setCanPropose={setCanPropose}
+            mutate={mutate}
           />
         )}
-        {proposalsMade && !querying && canPropose && !union?.exists && (
+        {p && !querying && canPropose && !union?.exists && (
           <MakeProposal
             currentAccount={accountData?.address}
             setCanPropose={setCanPropose}
             time={time}
             canPropose={canPropose}
-            read={read}
+            p={p}
+            mutate={mutate}
           />
         )}
       </div>

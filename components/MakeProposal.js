@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { fromUnixTime, addSeconds } from "date-fns";
 
 import { CheckCircleIcon } from "@heroicons/react/solid";
@@ -9,10 +9,10 @@ import {
   useContractWrite,
   useEnsAvatar,
   useContract,
-  useWaitForTransaction,
   useProvider,
   useEnsResolver,
   useContractRead,
+  useSigner,
 } from "wagmi";
 
 const abi = require("../config/United");
@@ -23,7 +23,7 @@ export default function MakeProposal({
   setCanPropose,
   time,
   canPropose,
-  read,
+  mutate,
 }) {
   const [searchENS, setSearchENS] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -32,6 +32,7 @@ export default function MakeProposal({
   const [error, setError] = useState("");
   const now = new Date().getTime();
   const options = { value: ethers.utils.parseEther("0.01") };
+
   const [proposalDone, write] = useContractWrite(
     {
       addressOrName: contractAddress,
@@ -42,8 +43,6 @@ export default function MakeProposal({
       args: [address, options],
     }
   );
-  const hash = proposalDone?.data?.hash;
-
   const [, readproposals] = useContractRead(
     {
       addressOrName: contractAddress,
@@ -76,9 +75,12 @@ export default function MakeProposal({
     contractInterface: abi,
     signerOrProvider: provider,
   });
-  const [waitResult] = useWaitForTransaction({
-    wait: proposalDone.data?.wait,
+  const [_, getSigner] = useSigner({
+    skip: true,
   });
+
+  const hash = proposalDone?.data?.hash;
+
   const searchForENS = async (e) => {
     e.preventDefault();
     setProcessing(true);
@@ -87,7 +89,6 @@ export default function MakeProposal({
     const isInTheRegistry = await isUnited({ args: address });
     const dateCreated = fromUnixTime(isProposal?.data?.createdAt).getTime();
     const deadline = addSeconds(dateCreated, time).getTime();
-    console.log(deadline, now);
 
     if (searchENS == "") {
       setProcessing(false);
@@ -100,7 +101,7 @@ export default function MakeProposal({
     } else if (isInTheRegistry?.data?.exists) {
       setProcessing(false);
       setError(`${searchENS} is alredy registered, sorry :/`);
-    } else if (deadline > now && !canPropose) {
+    } else if (deadline < now && !canPropose) {
       setProcessing(false);
       setError(`${searchENS} has a pending proposal from other person`);
     } else if (address.toLowerCase() == currentAccount.toLowerCase()) {
@@ -111,10 +112,8 @@ export default function MakeProposal({
   };
   const propose = async () => {
     setError("");
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
     try {
-      const signer = provider.getSigner();
+      const signer = await getSigner();
       let message = `Send a proposal to ${searchENS}`;
       await signer.signMessage(message);
     } catch (err) {
@@ -123,16 +122,27 @@ export default function MakeProposal({
       return;
     }
 
-    const result = await write().then(() =>
+    const result = await write().then(
       contract.on("ProposalSubmitted", (to, from) => {
         if (currentAccount == from) {
-          toast.success(`Love Proposal sent to ${searchENS} `, {
+          toast.success(`Sending a Love Proposal to ${searchENS} `, {
             toastId: "proposal_submitted",
           });
         }
-        read();
       })
     );
+    console.log(result);
+    const tx = await result?.data?.wait();
+    console.log(tx);
+    if (tx?.confirmations >= 1) {
+      setCanPropose(false);
+      toast.success(`transaction confirmed`, {
+        toastId: "transactionConfirmed",
+      });
+      setProcessing(false);
+      mutate();
+      return;
+    }
   };
 
   const handleMMerror = async (err) => {
@@ -161,17 +171,9 @@ export default function MakeProposal({
       setAvatar(ava);
     } else setAvatar(null);
 
-    if (waitResult?.data?.status >= 1) {
-      setCanPropose(false);
-      toast.success(`transaction confirmed`, {
-        toastId: "transactionConfirmed",
-      });
-      setProcessing(false);
-      return;
-    }
     adda();
     return () => {};
-  }, [res, ava, waitResult]);
+  }, [res, ava]);
 
   return (
     <>
