@@ -45,11 +45,11 @@ export default function Home() {
         />
       )}
 
-      <div className=" mt-0  flex flex-col justify-center items-center w-full min-h-screen py-4 px-12 text-rose-500">
+      <div className=" mt-0  md:mt-10 lg:mt-0 flex flex-col justify-center items-center w-full min-h-screen py-4 px-12 text-rose-500">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-center max-w-2xl">
           A love registry on the Ethereum blockchain
         </h1>
-        <h2 className="mt-4  lg:mt-6 font-light text-lg text-xl md:text-2xl lg:text-3xl text-center">
+        <h2 className="mt-4 lg:mt-6 font-light text-lg md:text-2xl lg:text-3xl text-center">
           Create a love proposal and share it with your partner <br />
           Wait for confirmation and enter this registry
         </h2>
@@ -64,7 +64,7 @@ export default function Home() {
           </Link>
         </h3>
 
-        <div className=" mt-6 lg:mt-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full hover:opacity-60 text-bold text-dm md:text-md lg:text-lg">
+        <div className=" mt-6 lg:mt-8 py-2 px-6 bg-rose-600 text-rose-50 rounded-full  text-bold text-dm md:text-md lg:text-lg">
           Coming Soon!
         </div>
       </div>
