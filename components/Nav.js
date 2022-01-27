@@ -11,18 +11,11 @@ export default function Nav() {
           </h3>
         </a>
       </Link>
-      <div className="flex items-center justify-end">
-        <Link passHref href={"https://twitter.com/EnsTogether"}>
-          <a target="_blank" rel="noopener noreferrer">
-            <FaTwitter className="text-rose-600 h-4 w-4 md:h-6 md:w-6 mr-4 md:mr-6 hover:text-rose-700" />
-          </a>
-        </Link>
-        <Link passHref href={"https://github.com/ENSLoveRegistry"}>
-          <a target="_blank" rel="noopener noreferrer">
-            <FaGithub className="text-rose-600 h-4 w-4 md:h-6 md:w-6 hover:text-rose-700" />
-          </a>
-        </Link>
-      </div>
+      <Link passHref href={"https://twitter.com/EnsTogether"}>
+        <a target="_blank" rel="noopener noreferrer">
+          <FaTwitter className="text-rose-600 h-4 w-4 md:h-6 md:w-6 mr-4 md:mr-6 hover:text-rose-700" />
+        </a>
+      </Link>
     </div>
   );
 }
