@@ -151,7 +151,7 @@ export default function ProposalToRespond({
   return (
     <div className="flex flex-col justify-center items-center min-h-screen p-4 ">
       {deadline > currentTime ? (
-        <Timer deadline={deadline} />
+        <Timer deadline={deadline} active={true} />
       ) : (
         <span className="text-rose-600 text-4xl font-bold"> Expired :( </span>
       )}

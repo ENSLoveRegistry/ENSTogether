@@ -140,7 +140,7 @@ export default function PendingProposal({
   return (
     <>
       <div className="flex flex-col md:flex-1 justify-center items-center min-h-screen p-4">
-        {deadline <= currentTime ? (
+        {deadline && deadline <= currentTime ? (
           <div className="my-8 flex flex-col justify-center p-6 bg-rose-600 text-white rounded-3xl max-w-md">
             <p className="text-md text-center">
               You&apos;ve been brave and that&apos;s something cool. <br /> You
@@ -148,7 +148,7 @@ export default function PendingProposal({
             </p>
           </div>
         ) : (
-          <Timer deadline={deadline} />
+          <Timer deadline={deadline} active={true} />
         )}
         <div className="shadow shadow-rose-300/50 flex flex-col justify-center items-center text-center mt-12 bg-rose-100 rounded-2xl p-12 max-w-lg text-lg font-semibold text-rose-600 ">
           <h3>

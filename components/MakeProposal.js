@@ -116,31 +116,31 @@ export default function MakeProposal({
       const signer = await getSigner();
       let message = `Send a proposal to ${searchENS}`;
       await signer.signMessage(message);
+
+      const result = await write().then(
+        contract.on("ProposalSubmitted", (to, from) => {
+          if (currentAccount == from) {
+            toast.success(`Sending a Love Proposal to ${searchENS} `, {
+              toastId: "proposal_submitted",
+            });
+          }
+        })
+      );
+      // console.log(result);
+      const tx = await result?.data?.wait();
+      // console.log(tx);
+      if (tx?.confirmations >= 1) {
+        setCanPropose(false);
+        toast.success(`transaction confirmed`, {
+          toastId: "transactionConfirmed",
+        });
+        setProcessing(false);
+        mutate();
+        return;
+      }
     } catch (err) {
       setProcessing(false);
       handleMMerror(err);
-      return;
-    }
-
-    const result = await write().then(
-      contract.on("ProposalSubmitted", (to, from) => {
-        if (currentAccount == from) {
-          toast.success(`Sending a Love Proposal to ${searchENS} `, {
-            toastId: "proposal_submitted",
-          });
-        }
-      })
-    );
-    console.log(result);
-    const tx = await result?.data?.wait();
-    console.log(tx);
-    if (tx?.confirmations >= 1) {
-      setCanPropose(false);
-      toast.success(`transaction confirmed`, {
-        toastId: "transactionConfirmed",
-      });
-      setProcessing(false);
-      mutate();
       return;
     }
   };
@@ -257,11 +257,13 @@ export default function MakeProposal({
               </span>
             </a>
           )}
-          {proposalDone?.error && (
-            <div className="bg-rose-200 py-1 px-6 rounded-md border border-rose-600 text-rose-600">
-              {proposalDone.error.message}
-            </div>
-          )}
+          {proposalDone?.error &&
+            (() => setProcessing(false),
+            (
+              <div className="bg-rose-200 py-1 px-6 rounded-md border border-rose-600 text-rose-600">
+                {proposalDone.error.message}
+              </div>
+            ))}
           {error && (
             <span className="bg-rose-200 py-1 px-6 text-rose-600 rounded-md border border-rose-600 text-center">
               {error}
