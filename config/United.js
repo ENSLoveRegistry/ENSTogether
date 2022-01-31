@@ -5,14 +5,13 @@ const abi = [
     type: "constructor",
   },
   {
-    inputs: [
-      {
-        internalType: "string",
-        name: "message",
-        type: "string",
-      },
-    ],
-    name: "AlreadyPending",
+    inputs: [],
+    name: "ReceiverAlreadyPending",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "SenderAlreadyPending",
     type: "error",
   },
   {
@@ -77,6 +76,25 @@ const abi = [
       {
         indexed: true,
         internalType: "address",
+        name: "previousOwner",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newOwner",
+        type: "address",
+      },
+    ],
+    name: "OwnershipTransferred",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "to",
         type: "address",
       },
@@ -108,12 +126,6 @@ const abi = [
       {
         indexed: true,
         internalType: "uint256",
-        name: "_timestamp",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
         name: "_status",
         type: "uint256",
       },
@@ -138,12 +150,6 @@ const abi = [
       },
       {
         indexed: true,
-        internalType: "uint256",
-        name: "_timestamp",
-        type: "uint256",
-      },
-      {
-        indexed: false,
         internalType: "uint256",
         name: "_status",
         type: "uint256",
@@ -206,7 +212,7 @@ const abi = [
     inputs: [],
     name: "cancelOrResetProposal",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -300,49 +306,26 @@ const abi = [
     type: "function",
   },
   {
-    inputs: [
+    inputs: [],
+    name: "nftContract",
+    outputs: [
       {
         internalType: "address",
         name: "",
         type: "address",
       },
     ],
-    name: "proposals",
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "owner",
     outputs: [
       {
         internalType: "address",
-        name: "to",
+        name: "",
         type: "address",
-      },
-      {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "uint8",
-        name: "proposalStatus",
-        type: "uint8",
-      },
-      {
-        internalType: "uint256",
-        name: "proposalNumber",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "exists",
-        type: "bool",
-      },
-      {
-        internalType: "bool",
-        name: "expired",
-        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -356,55 +339,6 @@ const abi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "proposalsMade",
-    outputs: [
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "uint8",
-        name: "proposalStatus",
-        type: "uint8",
-      },
-      {
-        internalType: "uint256",
-        name: "proposalNumber",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "exists",
-        type: "bool",
-      },
-      {
-        internalType: "bool",
-        name: "expired",
-        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -437,9 +371,16 @@ const abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
-        internalType: "enum United.Proposal",
+        internalType: "enum ENSTogether.Proposal",
         name: "response",
         type: "uint8",
       },
@@ -456,7 +397,7 @@ const abi = [
     ],
     name: "respondToProposal",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -488,45 +429,14 @@ const abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    name: "unionRegistry",
-    outputs: [
-      {
         internalType: "address",
-        name: "from",
+        name: "newOwner",
         type: "address",
       },
-      {
-        internalType: "address",
-        name: "to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "currentStatus",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "registryNumber",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "createdAt",
-        type: "uint256",
-      },
-      {
-        internalType: "bool",
-        name: "exists",
-        type: "bool",
-      },
     ],
-    stateMutability: "view",
+    name: "transferOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -541,17 +451,27 @@ const abi = [
     outputs: [
       {
         internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
-        internalType: "address",
         name: "to",
         type: "address",
       },
       {
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        internalType: "uint8",
+        name: "proposalStatus",
+        type: "uint8",
+      },
+      {
+        internalType: "uint8",
+        name: "relationshipStatus",
+        type: "uint8",
+      },
+      {
         internalType: "uint256",
-        name: "currentStatus",
+        name: "proposalNumber",
         type: "uint256",
       },
       {
@@ -566,7 +486,7 @@ const abi = [
       },
       {
         internalType: "bool",
-        name: "exists",
+        name: "expired",
         type: "bool",
       },
     ],
@@ -589,7 +509,7 @@ const abi = [
   {
     inputs: [
       {
-        internalType: "enum United.Status",
+        internalType: "enum ENSTogether.Status",
         name: "newStatus",
         type: "uint8",
       },

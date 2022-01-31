@@ -74,7 +74,7 @@ export default function RegistryTable() {
 
   if (!allUnions) {
     return (
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center min-h-max">
         <svg
           className="animate-spin -ml-1 mr-3 h-24 w-24 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +101,7 @@ export default function RegistryTable() {
 
   return (
     <>
-      <div className="hidden md:flex flex-col rounded-3xl bg-rose-100 shadow-md shadow-rose-300/40 overflow-y-auto mt-6 ">
+      <div className="hidden md:flex flex-col justify-center  rounded-3xl bg-rose-100 shadow-md shadow-rose-300/40 overflow-y-auto mt-6 lg:mt-0">
         <table className="rounded-full divide-y divide-rose-200 ">
           <tbody className=" divide-y divide-rose-200 text-rose-500 ">
             {allUnions?.length > 0 &&

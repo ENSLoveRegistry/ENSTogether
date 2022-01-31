@@ -31,13 +31,10 @@ export default function User({ children }) {
       addressOrName: contractAddress,
       contractInterface: abi,
     },
-    "proposals",
+    "unionWith",
     { skip: true }
   );
-  const { data: proposalsMade, mutate } = useSWR(
-    { args: accountData?.address },
-    readP
-  );
+  const { data: union, mutate } = useSWR({ args: accountData?.address }, readP);
 
   return (
     <UserContext.Provider
@@ -47,7 +44,7 @@ export default function User({ children }) {
         hearts,
         setHearts,
         time,
-        proposalsMade,
+        union,
         mutate,
       }}
     >

@@ -71,7 +71,7 @@ export default function ProposalToRespond({
       handleMMerror(err);
       return;
     }
-    const response = await write({ args: [1, t, f] }).then(
+    const response = await write({ args: [2, t, f] }).then(
       contract.on("ProposalResponded", (to) => {
         if (currentAccount == to) {
           toast.success("You are getting together :)", {
@@ -105,7 +105,7 @@ export default function ProposalToRespond({
       handleMMerror(err);
       return;
     }
-    const response = await write({ args: [2, t, f] }).then(
+    const response = await write({ args: [3, t, f] }).then(
       contract.on("ProposalCancelled", (to) => {
         if (currentAccount == to) {
           toast.success("Declining Love Proposal", {

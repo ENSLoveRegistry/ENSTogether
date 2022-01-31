@@ -11,7 +11,6 @@ import {
   useContract,
   useProvider,
   useEnsResolver,
-  useContractRead,
   useSigner,
 } from "wagmi";
 
@@ -24,6 +23,7 @@ export default function MakeProposal({
   time,
   canPropose,
   mutate,
+  p,
 }) {
   const [searchENS, setSearchENS] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -41,26 +41,6 @@ export default function MakeProposal({
     "propose",
     {
       args: [address, options],
-    }
-  );
-  const [, readproposals] = useContractRead(
-    {
-      addressOrName: contractAddress,
-      contractInterface: abi,
-    },
-    "proposals",
-    {
-      skip: true,
-    }
-  );
-  const [, isUnited] = useContractRead(
-    {
-      addressOrName: contractAddress,
-      contractInterface: abi,
-    },
-    "unionWith",
-    {
-      skip: true,
     }
   );
   const [{ data: res }] = useEnsResolver({
@@ -85,9 +65,7 @@ export default function MakeProposal({
     e.preventDefault();
     setProcessing(true);
     setError("");
-    const isProposal = await readproposals({ args: address });
-    const isInTheRegistry = await isUnited({ args: address });
-    const dateCreated = fromUnixTime(isProposal?.data?.createdAt).getTime();
+    const dateCreated = fromUnixTime(p?.createdAt).getTime();
     const deadline = addSeconds(dateCreated, time).getTime();
 
     if (searchENS == "") {
@@ -98,7 +76,7 @@ export default function MakeProposal({
       setProcessing(false);
       setError("Not an ENS domain");
       return;
-    } else if (isInTheRegistry?.data?.exists) {
+    } else if (p?.relationshipStatus === 1 || p?.relationshipStatus === 2) {
       setProcessing(false);
       setError(`${searchENS} is alredy registered, sorry :/`);
     } else if (deadline < now && !canPropose) {

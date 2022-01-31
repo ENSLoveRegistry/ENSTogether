@@ -12,8 +12,8 @@ const contractAddress = require("../config/contractAddress");
 
 const status = ["together", "paused", "separated"];
 
-const UnionModal = ({ currentAccount, readUnion, setCanPropose, mutate }) => {
-  const [union, setUnion] = useState(null);
+const UnionModal = ({ currentAccount, setCanPropose, mutate, un, s }) => {
+  let union = un;
   const [updateTo, setUpdateTo] = useState(null);
   const [currentStatus, setCurrentStatus] = useState(null);
   const [image, setImage] = useState(null);
@@ -40,8 +40,8 @@ const UnionModal = ({ currentAccount, readUnion, setCanPropose, mutate }) => {
     let num;
     //Status check
     if (
-      (union.currentStatus.toString() == "0" && updateTo == "together") ||
-      (union.currentStatus.toString() == "1" && updateTo == "paused")
+      (union.relationshipStatus.toString() == "1" && updateTo == "together") ||
+      (union.relationshipStatus.toString() == "2" && updateTo == "paused")
     ) {
       setProcessing(false);
       toast.error(
@@ -49,11 +49,11 @@ const UnionModal = ({ currentAccount, readUnion, setCanPropose, mutate }) => {
       );
       return;
     } else if (updateTo == "together") {
-      num = 0;
-    } else if (updateTo == "paused") {
       num = 1;
-    } else if (updateTo == "separated") {
+    } else if (updateTo == "paused") {
       num = 2;
+    } else if (updateTo == "separated") {
+      num = 3;
     }
 
     try {
@@ -69,16 +69,12 @@ const UnionModal = ({ currentAccount, readUnion, setCanPropose, mutate }) => {
                 toastId: "statusUpdated",
               }
             );
-          if (num == 2) {
+          if (num == 3) {
             setCanPropose(true);
-            mutate();
             return;
           }
         })
-        .then(() => {
-          readUnion();
-          return;
-        });
+        .then(() => mutate());
     } catch (error) {
       handleMMerror(error);
     }
@@ -112,23 +108,23 @@ const UnionModal = ({ currentAccount, readUnion, setCanPropose, mutate }) => {
 
   useEffect(() => {
     const check = async () => {
-      const res = await readUnion();
-      setUnion(res?.data);
-      if (res && res?.data?.currentStatus.toString() == "0") {
+      if (un && un?.relationshipStatus.toString() == "1") {
         setUpdateTo(status[0]);
         setCurrentStatus("together");
         getTokenId();
-      } else if (res && res?.data?.currentStatus.toString() == "1") {
+      } else if (un && un?.relationshipStatus.toString() == "2") {
         setUpdateTo(status[1]);
         setCurrentStatus("paused");
         getTokenId();
       }
-      return res;
+      return;
     };
-
+    if (tCompleted?.transactionHash) {
+      check();
+    }
     check();
     return () => {};
-  }, [tCompleted]);
+  }, [tCompleted, s]);
 
   return (
     <div className=" flex flex-col justify-center space-y-10 mt-16 md:mt-16 md:space-y-0 lg:mt-0 md:flex-row md:justify-between items-center min-h-screen md:space-x-12 text-rose-600 md:mx-auto md:max-w-2xl ">
