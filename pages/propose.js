@@ -13,48 +13,35 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { fromUnixTime, addSeconds } from "date-fns";
-const abi = require("../config/United");
-const contractAddress = require("../config/contractAddress");
 
 export default function Propose() {
-  const { time, accountData, proposalsMade, mutate } = useContext(UserContext);
+  const { time, accountData, union, mutate } = useContext(UserContext);
   const [querying, setQuerying] = useState(true);
   const [pExpired, setPExpired] = useState(null);
   const [canPropose, setCanPropose] = useState(false);
   const now = new Date().getTime();
 
-  let p = proposalsMade?.data;
+  let p = union?.data;
 
-  const [{ data: union }, readUnion] = useContractRead(
-    {
-      addressOrName: contractAddress,
-      contractInterface: abi,
-    },
-    "unionWith",
-    {
-      args: accountData?.address,
-    },
-    {
-      watch: true,
-    }
-  );
   const [{ data: networkData }] = useNetwork();
+
   useEffect(() => {
     const checkProposalsMade = async () => {
-      await readUnion();
       const createdAt = p?.createdAt;
       const dateCreated = fromUnixTime(createdAt).getTime();
       const deadline = addSeconds(dateCreated, time).getTime();
 
-      if (now > deadline || p?.exists == false || p?.expired == true) {
+      if (now > deadline && p?.proposalStatus == 1) {
         setPExpired(true);
         setQuerying(false);
         setCanPropose(true);
         return;
-      } else setPExpired(false);
-      setQuerying(false);
-      setCanPropose(false);
-      return;
+      } else if (p?.relationshipStatus !== 0 && p?.relationshipStatus !== 3) {
+        setQuerying(false);
+        setCanPropose(false);
+        return;
+      } else setQuerying(false);
+      setCanPropose(true);
     };
 
     if (p) {
@@ -120,8 +107,8 @@ export default function Propose() {
       <div>
         {p?.from == accountData?.address &&
           !querying &&
-          !canPropose &&
-          !union?.exists && (
+          p?.relationshipStatus == 0 &&
+          !p?.expired && (
             <PendingProposal
               proposalsMade={p}
               to={p?.to}
@@ -132,9 +119,9 @@ export default function Propose() {
             />
           )}
         {p?.to == accountData?.address &&
-          !pExpired &&
+          !p?.expired &&
           !querying &&
-          !union?.exists && (
+          p?.relationshipStatus == 0 && (
             <ProposalToRespond
               proposalsMade={p}
               currentAccount={accountData?.address}
@@ -144,25 +131,32 @@ export default function Propose() {
               mutate={mutate}
             />
           )}
-        {union?.exists == true && !querying && (
-          <UnionModal
-            un={union}
-            currentAccount={accountData?.address}
-            readUnion={readUnion}
-            setCanPropose={setCanPropose}
-            mutate={mutate}
-          />
-        )}
-        {p && !querying && canPropose && !union?.exists && (
-          <MakeProposal
-            currentAccount={accountData?.address}
-            setCanPropose={setCanPropose}
-            time={time}
-            canPropose={canPropose}
-            p={p}
-            mutate={mutate}
-          />
-        )}
+        {p?.relationshipStatus !== 0 &&
+          p?.relationshipStatus !== 3 &&
+          !canPropose &&
+          !querying && (
+            <UnionModal
+              un={p}
+              currentAccount={accountData?.address}
+              setCanPropose={setCanPropose}
+              mutate={mutate}
+              s={p?.relationshipStatus}
+            />
+          )}
+        {!querying &&
+          canPropose &&
+          p?.relationshipStatus != 1 &&
+          p?.relationshipStatus != 2 &&
+          p?.proposalStatus !== 1 && (
+            <MakeProposal
+              currentAccount={accountData?.address}
+              setCanPropose={setCanPropose}
+              time={time}
+              canPropose={canPropose}
+              p={p}
+              mutate={mutate}
+            />
+          )}
       </div>
     </div>
   );

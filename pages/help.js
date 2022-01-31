@@ -170,7 +170,7 @@ export default function Help() {
                   <br />
                   <Link
                     href={
-                      "https://goerli.etherscan.io/address/0xb2b02D6CfcEF77F13aaC909bd4af54646bFA2a14"
+                      "https://goerli.etherscan.io/address/0x073b265E22095f569DC942f6c91c2a61B460dE34"
                     }
                   >
                     <a
@@ -178,7 +178,7 @@ export default function Help() {
                       rel="noopener noreferrer"
                       className="font-bold tracking-tight text-sm"
                     >
-                      https://goerli.etherscan.io/address/0xb2b02D6CfcEF77F13aaC909bd4af54646bFA2a14
+                      https://goerli.etherscan.io/address/0x073b265E22095f569DC942f6c91c2a61B460dE34
                     </a>
                   </Link>
                 </Disclosure.Panel>

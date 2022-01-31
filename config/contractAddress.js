@@ -1,3 +1,3 @@
-const contractAddress = "0xb2b02D6CfcEF77F13aaC909bd4af54646bFA2a14";
-const nftContractAddress = "0x0B92948D3aEcfa78eA636D108A041DDfc644F1C4";
+const contractAddress = "0x073b265E22095f569DC942f6c91c2a61B460dE34";
+const nftContractAddress = "0x6E72b35c816D76a1C35fc4de3C2cebe0Af2B983E";
 (module.exports = contractAddress), nftContractAddress;
