@@ -23,6 +23,7 @@ export default function Help() {
                   A couples registry on the Ethereum blockchain. <br />
                   Building a fun experience that seeks to extrapolate some
                   features of the marital registration process to web3.
+                  Inclusive and welcoming to all people.
                 </Disclosure.Panel>
               </>
             )}
@@ -170,7 +171,7 @@ export default function Help() {
                   <br />
                   <Link
                     href={
-                      "https://goerli.etherscan.io/address/0x073b265E22095f569DC942f6c91c2a61B460dE34"
+                      "https://goerli.etherscan.io/address/0x5518e7F0Bd4591831993083A1b10b0afdA5B7f12"
                     }
                   >
                     <a
@@ -178,7 +179,7 @@ export default function Help() {
                       rel="noopener noreferrer"
                       className="font-bold tracking-tight text-sm"
                     >
-                      https://goerli.etherscan.io/address/0x073b265E22095f569DC942f6c91c2a61B460dE34
+                      https://goerli.etherscan.io/address/0x5518e7F0Bd4591831993083A1b10b0afdA5B7f12{" "}
                     </a>
                   </Link>
                 </Disclosure.Panel>
