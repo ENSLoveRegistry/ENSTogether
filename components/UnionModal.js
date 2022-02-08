@@ -7,8 +7,8 @@ import { useEnsLookup, useWaitForTransaction } from "wagmi";
 import { toast } from "react-toastify";
 import Image from "next/image";
 
-const abi = require("../config/United");
 const contractAddress = require("../config/contractAddress");
+const abi = require("../config/ENSTogetherABI");
 
 const status = ["together", "paused", "separated"];
 
@@ -28,7 +28,6 @@ const UnionModal = ({ currentAccount, setCanPropose, mutate, un, s }) => {
   const [{ data: tCompleted, error }, wait] = useWaitForTransaction({
     skip: true,
   });
-
   const updateStatus = async () => {
     setProcessing(true);
     const { ethereum } = window;
@@ -92,7 +91,6 @@ const UnionModal = ({ currentAccount, setCanPropose, mutate, un, s }) => {
         break;
     }
   };
-
   const getTokenId = async () => {
     const { ethereum } = window;
     const provider = new ethers.providers.Web3Provider(ethereum);

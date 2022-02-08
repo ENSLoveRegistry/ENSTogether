@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
 import { fromUnixTime, format, addSeconds } from "date-fns";
 import Timer from "./Timer";
 import { toast } from "react-toastify";
@@ -11,7 +10,7 @@ import {
   useSigner,
 } from "wagmi";
 
-const abi = require("../config/United");
+const abi = require("../config/ENSTogetherABI");
 const contractAddress = require("../config/contractAddress");
 
 export default function ProposalToRespond({
@@ -71,6 +70,7 @@ export default function ProposalToRespond({
       handleMMerror(err);
       return;
     }
+
     const response = await write({ args: [2, t, f] }).then(
       contract.on("ProposalResponded", (to) => {
         if (currentAccount == to) {
@@ -81,7 +81,7 @@ export default function ProposalToRespond({
       })
     );
     const tx = await response?.data?.wait();
-    console.log(response);
+    console.log("response", response);
     console.log("tx", tx);
     if (tx?.confirmations >= 1) {
       setCanPropose(true);

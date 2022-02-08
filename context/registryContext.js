@@ -6,7 +6,7 @@ import { request } from "graphql-request";
 
 const UnitedContext = createContext();
 
-const abi = require("../config/United");
+const abi = require("../config/ENSTogetherABI");
 const contractAddress = require("../config/contractAddress");
 
 export default function RegistryContext({ children }) {
@@ -77,7 +77,6 @@ export default function RegistryContext({ children }) {
       to
       createdAt
       registryNumber
-      currentStatus
     }
   }`,
     fetcher,

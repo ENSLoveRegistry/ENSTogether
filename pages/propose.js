@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
-import { useContractRead, useNetwork } from "wagmi";
+import { useNetwork } from "wagmi";
 
 //Components
 import MakeProposal from "../components/MakeProposal";
@@ -22,7 +22,6 @@ export default function Propose() {
   const now = new Date().getTime();
 
   let p = union?.data;
-
   const [{ data: networkData }] = useNetwork();
 
   useEffect(() => {
@@ -36,7 +35,11 @@ export default function Propose() {
         setQuerying(false);
         setCanPropose(true);
         return;
-      } else if (p?.relationshipStatus !== 0 && p?.relationshipStatus !== 3) {
+      } else if (
+        p?.relationshipStatus !== 3 &&
+        p?.proposalStatus !== 0 &&
+        p?.proposalStatus !== 3
+      ) {
         setQuerying(false);
         setCanPropose(false);
         return;
@@ -55,7 +58,6 @@ export default function Propose() {
     success: "bg-emerald-100 text-emerald-600 flex",
     error: "bg-rose-100 text-rose-600 flex",
   };
-  // console.log(p?.to, accountData?.address, pExpired, u?.exists);
   if (querying || networkData?.chain?.id !== 5) {
     return (
       <div className="flex flex-1 justify-center items-center min-h-screen">
@@ -108,6 +110,7 @@ export default function Propose() {
         {p?.from == accountData?.address &&
           !querying &&
           p?.relationshipStatus == 0 &&
+          !canPropose &&
           !p?.expired && (
             <PendingProposal
               proposalsMade={p}
@@ -121,6 +124,7 @@ export default function Propose() {
         {p?.to == accountData?.address &&
           !p?.expired &&
           !querying &&
+          !canPropose &&
           p?.relationshipStatus == 0 && (
             <ProposalToRespond
               proposalsMade={p}
@@ -146,8 +150,7 @@ export default function Propose() {
         {!querying &&
           canPropose &&
           p?.relationshipStatus != 1 &&
-          p?.relationshipStatus != 2 &&
-          p?.proposalStatus !== 1 && (
+          p?.relationshipStatus != 2 && (
             <MakeProposal
               currentAccount={accountData?.address}
               setCanPropose={setCanPropose}
