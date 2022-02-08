@@ -3,7 +3,7 @@ import { useAccount, useNetwork, useContractRead } from "wagmi";
 import useSWR from "swr";
 
 const UserContext = createContext();
-const abi = require("../config/United");
+const abi = require("../config/ENSTogetherABI");
 const contractAddress = require("../config/contractAddress");
 
 export default function User({ children }) {

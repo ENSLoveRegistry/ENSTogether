@@ -1,17 +1,23 @@
 const abi = [
   {
-    inputs: [],
+    inputs: [
+      {
+        internalType: "address",
+        name: "ensReverseRegistrar_",
+        type: "address",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "constructor",
   },
   {
     inputs: [],
-    name: "ReceiverAlreadyPending",
+    name: "ReceiverPendingProposal",
     type: "error",
   },
   {
     inputs: [],
-    name: "SenderAlreadyPending",
+    name: "SenderPendingProposal",
     type: "error",
   },
   {
@@ -47,12 +53,6 @@ const abi = [
         internalType: "address",
         name: "to",
         type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "_status",
-        type: "uint256",
       },
       {
         indexed: true,
@@ -148,12 +148,6 @@ const abi = [
         name: "from",
         type: "address",
       },
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "_status",
-        type: "uint256",
-      },
     ],
     name: "ProposalSubmitted",
     type: "event",
@@ -183,12 +177,6 @@ const abi = [
         indexed: true,
         internalType: "uint256",
         name: "_timestamp",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "_registrationNumber",
         type: "uint256",
       },
     ],
@@ -269,6 +257,25 @@ const abi = [
   {
     inputs: [
       {
+        internalType: "address",
+        name: "addr",
+        type: "address",
+      },
+    ],
+    name: "lookupENSName",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint256",
         name: "amount",
         type: "uint256",
@@ -303,19 +310,6 @@ const abi = [
     name: "modifyTimeToRespond",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "nftContract",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -404,7 +398,7 @@ const abi = [
     inputs: [
       {
         internalType: "address",
-        name: "_ca",
+        name: "ensTogetherNFT_",
         type: "address",
       },
     ],
@@ -455,14 +449,14 @@ const abi = [
         type: "address",
       },
       {
-        internalType: "address",
-        name: "from",
-        type: "address",
-      },
-      {
         internalType: "uint8",
         name: "proposalStatus",
         type: "uint8",
+      },
+      {
+        internalType: "address",
+        name: "from",
+        type: "address",
       },
       {
         internalType: "uint8",

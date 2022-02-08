@@ -11,7 +11,7 @@ import {
   useSigner,
 } from "wagmi";
 
-const abi = require("../config/United");
+const abi = require("../config/ENSTogetherABI");
 const contractAddress = require("../config/contractAddress");
 
 export default function PendingProposal({

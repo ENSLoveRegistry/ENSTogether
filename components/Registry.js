@@ -7,6 +7,7 @@ import { HeartIcon } from "@heroicons/react/solid";
 export default function RegistryTable() {
   const { unions } = useContext(UnitedContext);
   const [allUnions, setAllUnions] = useState(null);
+  console.log(allUnions);
 
   const convertToENS = async (add) => {
     const { ethereum } = window;

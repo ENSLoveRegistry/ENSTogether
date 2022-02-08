@@ -5,14 +5,7 @@ import User from "../context/userContext";
 import RegistryContext from "../context/registryContext";
 import Nav from "../components/Nav";
 import { ethers } from "ethers";
-import {
-  InjectedConnector,
-  Provider,
-  WalletConnectConnector,
-  WalletLinkConnector,
-  chain,
-  defaultChains,
-} from "wagmi";
+import { InjectedConnector, Provider, chain, defaultChains } from "wagmi";
 
 const provider = new ethers.providers.AlchemyProvider("goerli");
 
