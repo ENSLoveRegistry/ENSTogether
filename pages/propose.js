@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../context/userContext";
 import { useNetwork } from "wagmi";
+import Link from "next/link";
 
 //Components
 import MakeProposal from "../components/MakeProposal";
@@ -11,17 +12,22 @@ import UnionModal from "../components/UnionModal";
 //notification
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAccount } from "wagmi";
 
 import { fromUnixTime, addSeconds } from "date-fns";
 
 export default function Propose() {
-  const { time, accountData, union, mutate } = useContext(UserContext);
+  const { time, union, mutate } = useContext(UserContext);
   const [querying, setQuerying] = useState(true);
-  const [pExpired, setPExpired] = useState(null);
   const [canPropose, setCanPropose] = useState(false);
   const now = new Date().getTime();
 
+  const [{ data: accountData, error, loading }] = useAccount({
+    fetchEns: true,
+  });
+
   let p = union?.data;
+
   const [{ data: networkData }] = useNetwork();
 
   useEffect(() => {
@@ -31,8 +37,6 @@ export default function Propose() {
       const deadline = addSeconds(dateCreated, time).getTime();
 
       if (now > deadline && p?.proposalStatus == 1) {
-        setPExpired(true);
-        setQuerying(false);
         setCanPropose(true);
         return;
       } else if (
@@ -40,15 +44,13 @@ export default function Propose() {
         p?.proposalStatus !== 0 &&
         p?.proposalStatus !== 3
       ) {
-        setQuerying(false);
         setCanPropose(false);
         return;
-      } else setQuerying(false);
-      setCanPropose(true);
+      } else setCanPropose(true);
     };
 
     if (p) {
-      checkProposalsMade();
+      checkProposalsMade().then(() => setQuerying(false));
       return;
     }
     return;
@@ -58,9 +60,9 @@ export default function Propose() {
     success: "bg-emerald-100 text-emerald-600 flex",
     error: "bg-rose-100 text-rose-600 flex",
   };
-  if (querying || networkData?.chain?.id !== 5) {
+  if (querying || networkData?.chain?.id !== 1) {
     return (
-      <div className="flex flex-1 justify-center items-center min-h-screen">
+      <div className="flex flex-col flex-1 justify-center items-center min-h-screen">
         <svg
           className="animate-spin -ml-1 mr-3 h-24 w-24 text-white"
           xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +83,28 @@ export default function Propose() {
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
+        <h1 className="text-2xl text-rose-600 text-center tracking-tighter mt-4">
+          Not connected or wrong network
+        </h1>
+      </div>
+    );
+  }
+
+  if (!accountData?.ens && !loading) {
+    return (
+      <div className="flex flex-col flex-1 justify-center items-center min-h-screen">
+        <h1 className="text-2xl text-rose-600 text-center">
+          Please purchase or configure your ENS name to enter this registry
+        </h1>
+        <Link href={"https://app.ens.domains/"} passHref>
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            className="mt-8 text-xl text-rose-600 rounded-3xl px-4 py-2 border bg-rose-100 border-rose-600 hover:bg-rose-200"
+          >
+            Go to ENS domains
+          </a>
+        </Link>
       </div>
     );
   }

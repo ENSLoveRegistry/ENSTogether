@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { toast } from "react-toastify";
 import { fromUnixTime, addSeconds } from "date-fns";
-
+import { formatAddress } from "../utils/address";
 import { CheckCircleIcon } from "@heroicons/react/solid";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   useContractWrite,
@@ -12,6 +13,7 @@ import {
   useProvider,
   useEnsResolver,
   useSigner,
+  useEnsResolveName,
 } from "wagmi";
 
 const abi = require("../config/ENSTogetherABI");
@@ -31,7 +33,7 @@ export default function MakeProposal({
   const [address, setAddress] = useState(res);
   const [error, setError] = useState("");
   const now = new Date().getTime();
-  const options = { value: ethers.utils.parseEther("0.01") };
+  const options = { value: ethers.utils.parseEther("0.08") };
 
   const [proposalDone, write] = useContractWrite(
     {
@@ -48,6 +50,9 @@ export default function MakeProposal({
   });
   const [{ data: ava }] = useEnsAvatar({
     addressOrName: searchENS,
+  });
+  const [{ data: ensLoveR }] = useEnsResolveName({
+    name: searchENS,
   });
   const provider = useProvider();
   const contract = useContract({
@@ -67,7 +72,6 @@ export default function MakeProposal({
     setError("");
     const dateCreated = fromUnixTime(p?.createdAt).getTime();
     const deadline = addSeconds(dateCreated, time).getTime();
-
     if (searchENS == "") {
       setProcessing(false);
       setError("Enter something");
@@ -160,16 +164,21 @@ export default function MakeProposal({
           onSubmit={searchForENS}
           className="shadow shadow-rose-300/50 flex flex-col justify-center items-center p-8 md:p-10 lg:p-12 bg-rose-100 rounded-2xl space-y-4 w-full "
         >
-          {avatar && (
-            <img src={avatar} alt="" className="w-14 h-14 rounded-full" />
-          )}
-
           <label
             htmlFor="text"
             className="block  font-medium text-rose-500 text-2xl"
           >
             Propose to
           </label>
+          {avatar && (
+            <img src={avatar} alt="" className="w-14 h-14 rounded-full" />
+          )}
+          {ensLoveR && (
+            <p className="font-medium text-rose-600 text-xs">
+              {formatAddress(ensLoveR)}
+            </p>
+          )}
+
           <div className="mt-4 relative rounded-full shadow-lg shadow-rose-200/50  ">
             <input
               type="text"
@@ -222,7 +231,7 @@ export default function MakeProposal({
             {processing ? "Processing..." : "Send "}
           </button>
           <span className="flex justify-center text-rose-600 text-xs tracking-tight font-semibold">
-            Pay 0.01 ETH
+            Pay 0.08 ETH
           </span>
           {hash && (
             <a
@@ -238,8 +247,10 @@ export default function MakeProposal({
           {proposalDone?.error &&
             (() => setProcessing(false),
             (
-              <div className="bg-rose-200 py-1 px-6 rounded-md border border-rose-600 text-rose-600">
-                {proposalDone.error.message}
+              <div className="bg-rose-200 py-1 px-6 rounded-md border border-rose-600 text-rose-600 max-w-md ">
+                {proposalDone.error?.error?.message
+                  ? proposalDone.error?.error?.message
+                  : proposalDone.error.message}
               </div>
             ))}
           {error && (

@@ -3,15 +3,16 @@ import { ethers } from "ethers";
 import { UnitedContext } from "../context/registryContext";
 import { fromUnixTime, format } from "date-fns";
 import { HeartIcon } from "@heroicons/react/solid";
+import { useProvider } from "wagmi";
 
 export default function RegistryTable() {
   const { unions } = useContext(UnitedContext);
   const [allUnions, setAllUnions] = useState(null);
-  console.log(allUnions);
+  console.log(unions);
+
+  const provider = useProvider();
 
   const convertToENS = async (add) => {
-    const { ethereum } = window;
-    const provider = new ethers.providers.Web3Provider(ethereum);
     const converted = await provider.lookupAddress(add);
     const resolver = await provider.getResolver(converted);
     const avatar = await resolver.getAvatar();
@@ -54,8 +55,8 @@ export default function RegistryTable() {
         id,
         ensFrom: ensFrom[0],
         ensTo: ensTo[0],
-        avatarFrom: ensFrom[1].url,
-        avatarTo: ensTo[1].url,
+        avatarFrom: ensFrom[1]?.url,
+        avatarTo: ensTo[1]?.url,
         date,
         currentStatus,
         registryNumber,
@@ -105,7 +106,7 @@ export default function RegistryTable() {
       <div className="hidden md:flex flex-col justify-center  rounded-3xl bg-rose-100 shadow-md shadow-rose-300/40 overflow-y-auto mt-6 lg:mt-0">
         <table className="rounded-full divide-y divide-rose-200 ">
           <tbody className=" divide-y divide-rose-200 text-rose-500 ">
-            {allUnions?.length > 0 &&
+            {allUnions?.length > 0 ? (
               allUnions.map((u) => (
                 <tr key={u.id} className="p-1  ">
                   <td className="px-6 py-2  ">
@@ -127,7 +128,7 @@ export default function RegistryTable() {
                         alt={`${u.ensFrom} profile avatar`}
                       />
                     ) : (
-                      <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-rose-200 mr-1 "></div>
                     )}
                   </td>
                   <td className="px-6 py-2 ">
@@ -143,7 +144,7 @@ export default function RegistryTable() {
                         alt={`${u.avatarTo} profile avatar`}
                       />
                     ) : (
-                      <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-rose-200 mr-1 "></div>
                     )}
                   </td>
                   <td className="px-6 py-2 text-left  ">
@@ -152,7 +153,10 @@ export default function RegistryTable() {
                     </span>
                   </td>
                 </tr>
-              ))}
+              ))
+            ) : (
+              <h1 className="p-8 text-2xl">No entries atm :&apos;(</h1>
+            )}
           </tbody>
         </table>
       </div>
@@ -179,11 +183,11 @@ export default function RegistryTable() {
                       {u?.avatarFrom ? (
                         <img
                           src={u.avatarFrom}
-                          className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
+                          className="w-8 h-8 object-cover rounded-full text-transparent mr-1"
                           alt={`${u.avatarFrom} profile avatar`}
                         />
                       ) : (
-                        <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                        <span className="h-8 w-8 rounded-full bg-rose-200 mr-1" />
                       )}
 
                       <span className="">{u.ensFrom}</span>
@@ -192,11 +196,11 @@ export default function RegistryTable() {
                       {u?.avatarTo ? (
                         <img
                           src={u.avatarTo}
-                          className="w-8 h-8 lg:w-10 lg:h-10 object-cover rounded-full text-transparent mr-1"
+                          className="w-8 h-8 object-cover rounded-full text-transparent mr-1"
                           alt={`${u.avatarTo} profile avatar`}
                         />
                       ) : (
-                        <span className="h-10 w-10 rounded-full bg-rose-200 mr-4" />
+                        <span className="h-8 w-8 rounded-full bg-rose-200 mr-1" />
                       )}
                       <span className="">{u.ensTo}</span>
                     </div>

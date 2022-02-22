@@ -34,7 +34,7 @@ const UnionModal = ({ currentAccount, setCanPropose, mutate, un, s }) => {
     const provider = new ethers.providers.Web3Provider(ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract(contractAddress, abi, signer);
-    const options = { value: ethers.utils.parseEther("0.005") };
+    const options = { value: ethers.utils.parseEther("0.04") };
 
     let num;
     //Status check

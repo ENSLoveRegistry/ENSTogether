@@ -7,7 +7,7 @@ import Nav from "../components/Nav";
 import { ethers } from "ethers";
 import { InjectedConnector, Provider, chain, defaultChains } from "wagmi";
 
-const provider = new ethers.providers.AlchemyProvider("goerli");
+const provider = new ethers.providers.AlchemyProvider("mainnet");
 
 // Chains for connectors to support
 const chains = defaultChains;
@@ -17,7 +17,14 @@ const connectors = ({ chainId }) => {
   const rpcUrl =
     chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
     chain.mainnet.rpcUrls[0];
-  return [new InjectedConnector({ chains })];
+  return [
+    new InjectedConnector({
+      chains,
+      options: {
+        shimDisconnect: true,
+      },
+    }),
+  ];
 };
 
 function MyApp({ Component, pageProps }) {

@@ -197,7 +197,7 @@ export default function PendingProposal({
               Propose
             </button>
           )}
-          {deadline >= currentTime && (
+          {/* {deadline >= currentTime && (
             <div className=" mt-4 flex flex-col items-start ">
               <p className="text-rose-600 font-semibold text-sm">
                 Share it with your lover
@@ -207,7 +207,7 @@ export default function PendingProposal({
                 <FaEnvelope className="cursor-pointer bg-rose-200 text-rose-600 p-3 w-10 h-10 rounded-xl hover:bg-rose-300" />
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>
