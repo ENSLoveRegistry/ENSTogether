@@ -1,12 +1,9 @@
 import { useContext } from "react";
 import { UnitedContext } from "../context/registryContext";
 import RegistryTable from "../components/Registry";
-import { useNetwork } from "wagmi";
 
 export default function Registry() {
   const { proposalsCounter, registryCounter } = useContext(UnitedContext);
-
-  const [{ data: networkData }] = useNetwork();
 
   return (
     <>

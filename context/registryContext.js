@@ -15,7 +15,7 @@ export default function RegistryContext({ children }) {
   const [registryCounter, setRegistryCounter] = useState(null);
 
   const APIURL =
-    "https://api.thegraph.com/subgraphs/name/javier-szyfer/ens-two";
+    "https://api.thegraph.com/subgraphs/id/Qma7UcniLRUt6ZUpuLUE1mpY41BofNE8qktBPLUNKmVzx5";
 
   //Stats from registry
 

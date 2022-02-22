@@ -121,12 +121,10 @@ export default function Help() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
-                  Yes, at the Proposal Stage you can cancel the order if you
-                  regret it. <br />
+                  Yes, you can cancel the love proposal if you regret it. <br />
                   Once registered as a couple you can update your relationship
                   status to &apos;paused&apos; or &apos;separated&apos;. The
-                  latter allows you to generate another registration in the
-                  future.
+                  latter allows you to get registered in the future.
                 </Disclosure.Panel>
               </>
             )}
@@ -145,7 +143,7 @@ export default function Help() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
-                  There is an expiration time because unlike in the real world
+                  There is an expiration time because, unlike in the real world,
                   here the process is necessarily asynchronous, and the other
                   person must receive the proposal and respond in order to
                   complete the registration. On the other hand when the time
@@ -167,11 +165,11 @@ export default function Help() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pt-4 pb-2 text-md text-rose-700">
-                  The contract is not audited and still under development.
+                  The contract is not audited.
                   <br />
                   <Link
                     href={
-                      "https://goerli.etherscan.io/address/0x5518e7F0Bd4591831993083A1b10b0afdA5B7f12"
+                      "https://etherscan.io/address/0x2557B6988903446f3Ae56d00d6006A4555280587#code"
                     }
                   >
                     <a
@@ -179,7 +177,7 @@ export default function Help() {
                       rel="noopener noreferrer"
                       className="font-bold tracking-tight text-sm"
                     >
-                      https://goerli.etherscan.io/address/0x5518e7F0Bd4591831993083A1b10b0afdA5B7f12{" "}
+                      https://etherscan.io/address/0x2557B6988903446f3Ae56d00d6006A4555280587#code
                     </a>
                   </Link>
                 </Disclosure.Panel>
